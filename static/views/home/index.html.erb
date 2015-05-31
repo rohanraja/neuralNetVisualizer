@@ -1,0 +1,22 @@
+<script type="text/javascript">
+
+var heightSvg = 500;
+var widthSvg = 800; 
+
+
+
+var svgContainer = d3.select("body").append("svg")
+                                    .attr("width", widthSvg)
+                                    .attr("height", heightSvg).on("click", mousemove)
+                                    .style("border", "1px solid")
+                                    .style("margin-left", "200px");
+
+
+</script>
+
+
+
+<button class='btn btn-danger' id='classbtn' onClick="changeClass()">ChangeClass</button>
+<button class='btn btn-success' onClick="trainData()">Train</button>
+<br>
+<br>

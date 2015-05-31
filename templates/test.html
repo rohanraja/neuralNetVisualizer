@@ -1,0 +1,56 @@
+
+{% extends "application.html" %}
+
+{% block yield %}
+
+
+  <script data-turbolinks-track="true" src="/static/javascripts/AjaxManager.js?body=1"></script>
+  <script data-turbolinks-track="true" src="/static/javascripts/D3Graphics/Circle.js?body=1"></script>
+  <script data-turbolinks-track="true" src="/static/javascripts/D3Graphics/D3Graphics.js?body=1"></script>
+  <script data-turbolinks-track="true" src="/static/javascripts/D3Graphics/GraphicsData.js?body=1"></script>
+  <script data-turbolinks-track="true" src="/static/javascripts/D3Graphics/Rectangle.js?body=1"></script>
+  <script data-turbolinks-track="true" src="/static/javascripts/Dataset.js?body=1"></script>
+  <script data-turbolinks-track="true" src="/static/javascripts/FeatureMapper.js?body=1"></script>
+  <script data-turbolinks-track="true" src="/static/javascripts/HeatMapGen.js?body=1"></script>
+  <script data-turbolinks-track="true" src="/static/javascripts/HypoFunction.js?body=1"></script>
+  <script data-turbolinks-track="true" src="/static/javascripts/logisticTrainer.js?body=1"></script>
+  <script data-turbolinks-track="true" src="/static/javascripts/graphics.js"></script>
+
+<script type="text/javascript">
+
+var heightSvg = 500;
+var widthSvg = 600;
+var svgContainer;
+
+$( document ).ready(function(){
+
+    svgContainer = d3.select("#svggg").append("svg")
+                                    .attr("width", widthSvg)
+                                    .attr("height", heightSvg).on("click", mousemove)
+                                    .style("border", "1px solid")
+                                    .style("display", "inline");
+});
+
+
+
+</script>
+
+
+<br>
+<br>
+<br>
+<br>
+<button class='btn btn-danger' id='classbtn' onClick="changeClass()">ChangeClass</button>
+<button class='btn btn-success' onClick="trainData()">Train</button>
+<br>
+<br>
+
+<div class="row">
+<div id="svggg" class="col-md-6"></div>
+<div id="progressReport" style="display:inline" class="col-md-6"></div>
+</div>
+
+</p>
+{% end %}
+
+
