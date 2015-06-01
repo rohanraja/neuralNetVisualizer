@@ -35,7 +35,7 @@
 
 
 </head>
-<body>
+<body ng-app="mlTut">
   <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
       <div class="navbar-header">
@@ -92,7 +92,7 @@ $( document ).ready(function(){
 </script>
 
 
-  <div class="container"  ng-app="" >
+  <div class="container" ng-controller="logregCtrl"  >
 
 
 <br><br><br><br>
@@ -103,8 +103,10 @@ $( document ).ready(function(){
 <br>
 
 <div class="row">
-<div id="svggg" class="col-md-6"></div>
-<div id="progressReport" style="display:inline" class="col-md-6"></div>
+<div id="svggg" class="col-md-7"></div>
+<div id="progressReport" style="display:inline" class="col-md-5">
+{{ message }}
+</div>
 </div>
 
 </p>

@@ -57,7 +57,7 @@ function LogTrainer (tData, pNumClasses) {
     this.plotPathfromVertices = function(data)
     {
     	console.log("Got New Vertices Array");
-    	$('#progressReport').html("<br>" + JSON.parse(data.data));
+    	//$('#progressReport').append("<br>" + "Got New Plot");
         points = JSON.parse(data.data);
 
         plotPathData(points);

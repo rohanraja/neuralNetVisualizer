@@ -16,7 +16,7 @@ class LogisticRegression():
     Gaussian priors on parameters). """
 
     def __init__(self, x_train=None, y_train=None, x_test=[], y_test=[],
-                 alpha=0.0000, synthetic=False, socketWriter = None, inputData = None):
+                 alpha=0.0003, synthetic=False, socketWriter = None, inputData = None):
 
         try:
         # Set L2 regularization strength
@@ -107,7 +107,7 @@ class LogisticRegression():
 
         self.x_train = np.array(mappedX)
 
-        self.x_train = self.x_train / 100
+        self.x_train = self.x_train / 1000
 
 
     def onThetaIteration(self, theta):
