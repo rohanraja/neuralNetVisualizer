@@ -22,6 +22,11 @@ class LogisticRegression():
         # Set L2 regularization strength
             self.alpha = alpha
 
+            self.inputData = inputData
+
+            self.degree = int(self.inputData['degree'])
+            self.divFactor = int(self.inputData['divFactor'])
+
             # Set the data.
             self.set_data(x_train, y_train)
 
@@ -31,7 +36,8 @@ class LogisticRegression():
             self.num = 0
 
             self.socketWriter = socketWriter
-            self.inputData = inputData
+
+            pass
 
         except:
             pass
@@ -102,12 +108,12 @@ class LogisticRegression():
 
 
         for x in self.x_train :
-            mapX = featureMapper.mapFeature(x[0], x[1])
+            mapX = featureMapper.mapFeature(x[0], x[1], self.degree)
             mappedX.append(mapX)
 
         self.x_train = np.array(mappedX)
 
-        self.x_train = self.x_train / 1000
+        self.x_train = self.x_train / self.divFactor
 
 
     def onThetaIteration(self, theta):
@@ -134,7 +140,7 @@ class LogisticRegression():
         for i in range(Z.shape[0]):
             for j in range(Z.shape[1]):
 
-                features = featureMapper.mapFeature(X[i,j], Y[i,j])
+                features = featureMapper.mapFeature(X[i,j], Y[i,j], self.degree)
                 Z[i,j] = np.dot(self.betas , np.array(features))
 
         return Z#self.betas[0] + self.betas[1]*X + self.betas[2]*Y

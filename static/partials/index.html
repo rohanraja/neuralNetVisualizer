@@ -98,14 +98,18 @@ $( document ).ready(function(){
 <br><br><br><br>
 
 <button class='btn btn-danger' id='classbtn' onClick="changeClass()">ChangeClass</button>
-<button class='btn btn-success' onClick="trainData()">Train</button>
+<button class='btn btn-success' ng-click="onTrainClick() ">Train</button>
 <br>
 <br>
 
 <div class="row">
 <div id="svggg" class="col-md-7"></div>
+
 <div id="progressReport" style="display:inline" class="col-md-5">
-{{ message }}
+
+  <input ng-model="degree" placeholder="Degree"  />
+  <input ng-model="divFactor" placeholder="DivFactor" />
+
 </div>
 </div>
 
