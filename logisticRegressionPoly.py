@@ -109,7 +109,7 @@ class LogisticRegression():
 
         mappedX = []
 
-
+        self.x_train = self.x_train / self.divFactor
 
         for x in self.x_train :
             mapX = featureMapper.mapFeature(x[0], x[1], self.degree)
@@ -117,7 +117,7 @@ class LogisticRegression():
 
         self.x_train = np.array(mappedX)
 
-        self.x_train = self.x_train / self.divFactor
+
 
 
     def onThetaIteration(self, theta):
@@ -129,16 +129,16 @@ class LogisticRegression():
         print "LikelyHood: ", cost
 
         plotPathPoints = plotter.getPlottingPoints(0,
-                                                   self.inputData['widthSvg'],
+                                                   float(self.inputData['widthSvg']) / self.divFactor,
                                                    0,
-                                                   self.inputData['heightSvg'],
+                                                   float(self.inputData['heightSvg']) / self.divFactor,
                                                    self.HTheta,
-                                                   10
+                                                   10.0/ self.divFactor
                                                    )
 
         result = {}
 
-        result['plotPath'] = list([list(point) for point in plotPathPoints])
+        result['plotPath'] = list([list(point*self.divFactor) for point in plotPathPoints])
         result['cost'] = cost
         result['percentComplete'] = 100 - ((cost *100) / self.initialCost)
 

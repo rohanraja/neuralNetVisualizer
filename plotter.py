@@ -11,7 +11,7 @@ def getPlottingPoints(xMin, xMax, yMin, yMax, evalFunc, delta = 2, debugMap = Fa
     x = np.arange(xMin, xMax, delta)
     y = np.arange(yMin, yMax, delta)
 
-    X, Y = np.meshgrid(x, y)
+    X, Y = np.meshgrid(x, y) 
 
     Z = evalFunc(X,Y)
 
