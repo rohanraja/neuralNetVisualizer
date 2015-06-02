@@ -107,8 +107,23 @@ $( document ).ready(function(){
 
 <div id="progressReport" style="display:inline" class="col-md-5">
 
-  <input ng-model="degree" placeholder="Degree"  />
-  <input ng-model="divFactor" placeholder="DivFactor" />
+  Degree : <input ng-model="degree" placeholder="Degree"  /><br>
+  DivFac : <input ng-model="divFactor" placeholder="DivFactor" /><br>
+  Alphav : <input ng-model="alpha" placeholder="alpha" />
+
+    <br>
+    <br>
+
+  Cost : {{cost}}
+    <br>
+
+    <br>
+
+  <div class="progress">
+    <div class="progress-bar" role="progressbar" aria-valuenow="{{percentComplete}}" aria-valuemin="0" aria-valuemax="100" style="width:{{percentComplete}}%">
+      {{percentComplete | number : 1}} %
+    </div>
+  </div>
 
 </div>
 </div>

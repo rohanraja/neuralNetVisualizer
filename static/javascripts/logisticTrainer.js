@@ -1,4 +1,4 @@
-function LogTrainer (tData, pNumClasses) {
+function LogTrainer (tData, pNumClasses, onRecvData) {
     
     this.rawTrainingData = tData;
     this.trainingData = [];
@@ -11,6 +11,8 @@ function LogTrainer (tData, pNumClasses) {
 
     this.heightSvg = heightSvg ;
     this.widthSvg = widthSvg ;
+
+    this.onRecvData = onRecvData;
 
     this.initHypoFunctions = function()
     {
@@ -58,7 +60,8 @@ function LogTrainer (tData, pNumClasses) {
     {
     	console.log("Got New Vertices Array");
     	//$('#progressReport').append("<br>" + "Got New Plot");
-        points = JSON.parse(data.data);
+        resultData = JSON.parse(data.data);
+        points = resultData.plotPath;
 
         plotPathData(points);
 
@@ -78,7 +81,7 @@ function LogTrainer (tData, pNumClasses) {
     	    ws.send(jsonData);
     	});
 
-    	ws.onmessage = this.plotPathfromVertices;
+    	ws.onmessage = this.onRecvData;//this.plotPathfromVertices;
 
 
         //this.ajaxManager.postJSON(server_url, jsonData, this.processTrainedTheta);

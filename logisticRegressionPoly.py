@@ -26,6 +26,7 @@ class LogisticRegression():
 
             self.degree = int(self.inputData['degree'])
             self.divFactor = int(self.inputData['divFactor'])
+            self.alpha = float(self.inputData['alpha'])
 
             # Set the data.
             self.set_data(x_train, y_train)
@@ -82,6 +83,9 @@ class LogisticRegression():
                                   for k in range(self.x_train.shape[1])])
 
         # Optimize
+
+        self.initialCost = self.negative_lik(self.betas)
+
         self.betas = fmin_bfgs(self.negative_lik, self.betas, fprime=dB, callback= self.onThetaIteration)
 
         return "Trained"
@@ -120,7 +124,9 @@ class LogisticRegression():
 
         self.betas = theta
 
-        print "LikelyHood: ", self.negative_lik(theta)
+        cost = self.negative_lik(theta)
+
+        print "LikelyHood: ", cost
 
         plotPathPoints = plotter.getPlottingPoints(0,
                                                    self.inputData['widthSvg'],
@@ -130,7 +136,14 @@ class LogisticRegression():
                                                    10
                                                    )
 
-        self.socketWriter(json.dumps(list([list(point) for point in plotPathPoints])))
+        result = {}
+
+        result['plotPath'] = list([list(point) for point in plotPathPoints])
+        result['cost'] = cost
+        result['percentComplete'] = 100 - ((cost *100) / self.initialCost)
+
+
+        self.socketWriter(json.dumps(result))
 
 
     def HTheta(self,X, Y): # ToDo - Optimize for speed
