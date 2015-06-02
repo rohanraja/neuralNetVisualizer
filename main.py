@@ -6,9 +6,9 @@ import tornado.websocket
 import tornado.template as template
 import json
 import logreg
-import logreg2
+#import logreg2
 import time
-from tornado.concurrent import return_future
+#from tornado.concurrent import return_future
 from tornado import gen
 import plotter
 import logisticRegressionPoly as lrPoly

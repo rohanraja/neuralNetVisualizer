@@ -1,9 +1,9 @@
 __author__ = 'rohanraja'
 
-import matplotlib
 import numpy as np
-import matplotlib.cm as cm
-import matplotlib.mlab as mlab
+
+import matplotlib as mpl
+mpl.use('Agg')
 import matplotlib.pyplot as plt
 
 def getPlottingPoints(xMin, xMax, yMin, yMax, evalFunc, delta = 2, debugMap = False):
