@@ -4,6 +4,7 @@ import pylab
 import plotter
 import json
 import featureMapper
+import time
 
 def sigmoid(x):
     try:
@@ -25,7 +26,7 @@ class LogisticRegression():
             self.inputData = inputData
 
             self.degree = int(self.inputData['degree'])
-            self.divFactor = int(self.inputData['divFactor'])
+            self.divFactor = np.max(x_train) #int(self.inputData['divFactor'])
             self.alpha = float(self.inputData['alpha'])
 
             # Set the data.
@@ -37,8 +38,6 @@ class LogisticRegression():
             self.num = 0
 
             self.socketWriter = socketWriter
-
-            pass
 
         except:
             pass
@@ -60,11 +59,6 @@ class LogisticRegression():
             l -= (self.alpha / 2.0) * self.betas[k]**2
 
         return l
-
-    def afterIter(self, val):
-
-        self.num = self.num + 1
-        print self.num
 
     def train(self):
         """ Define the gradient and hand it off to a scipy gradient-based
@@ -118,7 +112,11 @@ class LogisticRegression():
         self.x_train = np.array(mappedX)
 
 
+    def predict(self, x, y):
 
+        features = featureMapper.mapFeature(x,y, self.degree)
+
+        return -1 if np.dot(self.betas , np.array(features)) > 0 else 1
 
     def onThetaIteration(self, theta):
 
@@ -133,7 +131,7 @@ class LogisticRegression():
                                                    0,
                                                    float(self.inputData['heightSvg']) / self.divFactor,
                                                    self.HTheta,
-                                                   10.0/ self.divFactor
+                                                   6.0/ self.divFactor
                                                    )
 
         result = {}
@@ -158,3 +156,14 @@ class LogisticRegression():
 
         return Z#self.betas[0] + self.betas[1]*X + self.betas[2]*Y
 
+
+    def predMatrix(self,X ,Y):
+
+        Z = np.random.random(X.shape)
+
+        for i in range(Z.shape[0]):
+            for j in range(Z.shape[1]):
+
+                Z[i,j] = self.predict(X[i,j], Y[i,j])
+
+        return Z

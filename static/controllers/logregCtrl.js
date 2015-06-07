@@ -1,4 +1,4 @@
-var app = angular.module("mlTut", []);
+var app = angular.module("mlTut", ['ui.bootstrap']);
 
 app.controller("logregCtrl", function($scope) {
 
@@ -11,7 +11,6 @@ app.controller("logregCtrl", function($scope) {
     $scope.plotPathfromVertices = function(data)
     {
     	console.log("Got New Vertices Array");
-    	//$('#progressReport').append("<br>" + "Got New Plot");
         resultData = JSON.parse(data.data);
         points = resultData.plotPath;
         $scope.cost = resultData.cost ;

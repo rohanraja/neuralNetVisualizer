@@ -12,6 +12,7 @@ import time
 from tornado import gen
 import plotter
 import logisticRegressionPoly as lrPoly
+import neuralNetworkTrainer as nnT
 
 def run_async(func):
 
@@ -60,11 +61,14 @@ class EchoWebSocket(tornado.websocket.WebSocketHandler):
         X = [sample['inputVector'] for sample in samples]
         Y = [sample['outputVal'] for sample in samples]
 
-        lr2 = lrPoly.LogisticRegression(X,Y, socketWriter=self.write_message, inputData= self.inputData)
+        #lr2 = lrPoly.LogisticRegression(X,Y, socketWriter=self.write_message, inputData= self.inputData)
+        lr2 = nnT.NeuralNetworkTrainer(X,Y, socketWriter=self.write_message, inputData= self.inputData)
 
-        print "Initial Likelihood : ", lr2.lik(lr2.betas)
+       # print "Initial Likelihood : ", lr2.nnCost(lr2.betas)
 
         finalTheta = lr2.train()
+
+        #lr2.onThetaIteration(finalTheta)
 
         print finalTheta
 
