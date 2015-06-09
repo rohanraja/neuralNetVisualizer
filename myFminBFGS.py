@@ -14,7 +14,7 @@ from scipy.optimize.optimize import vecnorm
 from scipy.optimize.optimize import line_search
 import json
 import ParamsManager
-
+import pickle
 
 def Customfmin_bfgs(f, x0, fprime=None, args=(), gtol=1e-5, norm=Inf,
               epsilon= numpy.sqrt(numpy.finfo(float).eps), maxiter=None, full_output=0, disp=1,
@@ -157,8 +157,10 @@ def fminLooped(f, x0, fprime=None, args=(), gtol=1e-5, norm=Inf,
     gnorm = vecnorm(gfk,ord=norm)
 
     newInputParams = locals()
+    for loopI in range(10):
 
-    for loopI in range(100):
+        pickleBles = ParamsManager.filterUnpickles(newInputParams)
+        print pickle.dumps(pickleBles)
         newInputParams = loopThing(newInputParams)
 
 
