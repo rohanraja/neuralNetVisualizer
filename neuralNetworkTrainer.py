@@ -7,7 +7,7 @@ import featureMapper
 import time
 
 import NeuralNetwork as nn
-
+import myFminBFGS
 
 def sigmoid(x):
     try:
@@ -58,7 +58,8 @@ class NeuralNetworkTrainer():
 
         print "Initial Likelihood : ", self.initialCost
 
-        self.betas = fmin_bfgs(self.nnCost, self.betas, fprime=self.nnCostPrime ,callback= self.onThetaIteration)
+        #self.betas = fmin_bfgs(self.nnCost, self.betas, fprime=self.nnCostPrime ,callback= self.onThetaIteration)
+        self.betas = myFminBFGS.fminLooped(self.nnCost, self.betas, fprime=self.nnCostPrime ,callback= self.onThetaIteration)
 
         return "Trained"
 

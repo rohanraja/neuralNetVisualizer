@@ -13,6 +13,7 @@ from tornado import gen
 import plotter
 import logisticRegressionPoly as lrPoly
 import neuralNetworkTrainer as nnT
+import TrainingJob
 
 def run_async(func):
 
