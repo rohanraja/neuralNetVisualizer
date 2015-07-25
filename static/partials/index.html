@@ -70,7 +70,7 @@
   <script data-turbolinks-track="true" src="/static/javascripts/logisticTrainer.js?body=1"></script>
   <script data-turbolinks-track="true" src="/static/javascripts/graphics.js"></script>
 
-  <!--<script type="text/javascript" src="/static/app.js"></script>-->
+  <script type="text/javascript" src="/static/app.js"></script>
   <script type="text/javascript" src="/static/controllers/logregCtrl.js"></script>
 
 <script type="text/javascript">
@@ -79,61 +79,13 @@ var heightSvg = 500;
 var widthSvg = 600;
 var svgContainer;
 
-$( document ).ready(function(){
-
-    svgContainer = d3.select("#svggg").append("svg")
-                                    .attr("width", widthSvg)
-                                    .attr("height", heightSvg).on("click", mousemove)
-                                    .style("border", "1px solid")
-                                    .style("display", "inline");
-});
-
-
-
 </script>
 
-
-  <div class="container" ng-controller="logregCtrl"  >
-
-
-<br><br><br><br>
-
-<button class='btn btn-danger' id='classbtn' onClick="changeClass()">ChangeClass</button>
-<button class='btn btn-success' ng-click="onTrainClick() ">Train</button>
 <br>
 <br>
-
-<div class="row">
-<div id="svggg" class="col-md-7"></div>
-
-<div id="progressReport" style="display:inline" class="col-md-5">
-
-  Degree : <input ng-model="degree" placeholder="Degree"  /><br>
-  DivFac : <input ng-model="divFactor" placeholder="DivFactor" /><br>
-  Alphav : <input ng-model="alpha" placeholder="alpha" />
-
-    <br>
-    <br>
-
-  Cost : {{cost}}
-    <br>
-
-    <br>
-
-  <div class="progress">
-    <div class="progress-bar" role="progressbar" aria-valuenow="{{percentComplete}}" aria-valuemin="0" aria-valuemax="100" style="width:{{percentComplete}}%">
-      {{percentComplete | number : 1}} %
-    </div>
-  </div>
-
+<div class="container" >
+  <div ng-view></div>
 </div>
-</div>
-
-</p>
-
-
-
-  </div>
 </body>
 
 </html>

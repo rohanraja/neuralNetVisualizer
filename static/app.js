@@ -5,7 +5,7 @@ app.config(['$routeProvider',function ($routeprovider) {
       
       $routeprovider.
         when('/logreg', {
-            templateurl: '/static/partials/logreg.html',
+            templateUrl: '/static/partials/logreg.html',
             controller: 'logregCtrl'
         });
   }]);

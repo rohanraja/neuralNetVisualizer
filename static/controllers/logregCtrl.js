@@ -1,4 +1,5 @@
-var app = angular.module("mlTut", ['ui.bootstrap']);
+var app = angular.module("mlTut");
+// var app = angular.module("mlTut", ['ui.bootstrap']);
 
 app.controller("logregCtrl", function($scope) {
 
@@ -39,6 +40,13 @@ app.controller("logregCtrl", function($scope) {
 		  trainer.alpha = $scope.alpha;
 		  trainer.train();
     }
+
+
+     svgContainer = d3.select("#svggg").append("svg")
+                                    .attr("width", widthSvg)
+                                    .attr("height", heightSvg).on("click", mousemove)
+                                    .style("border", "1px solid")
+                                    .style("display", "inline");
 
 
     
