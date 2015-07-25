@@ -16,6 +16,7 @@ import json
 import ParamsManager
 import pickle
 
+
 def Customfmin_bfgs(f, x0, fprime=None, args=(), gtol=1e-5, norm=Inf,
               epsilon= numpy.sqrt(numpy.finfo(float).eps), maxiter=None, full_output=0, disp=1,
               retall=0, callback=None):
@@ -132,6 +133,7 @@ def fminLooped(f, x0, fprime=None, args=(), gtol=1e-5, norm=Inf,
               retall=0, callback=None):
 
     testVar = 0
+
     x0 = asarray(x0).squeeze()
     if x0.ndim == 0:
         x0.shape = (1,)
@@ -157,10 +159,15 @@ def fminLooped(f, x0, fprime=None, args=(), gtol=1e-5, norm=Inf,
     gnorm = vecnorm(gfk,ord=norm)
 
     newInputParams = locals()
+
+    pickleBles, NonPickles = ParamsManager.filterUnpickles(newInputParams)
+
+    import dill
+    pickle.dump(pickleBles, open('inputParams.dat', 'w'))
+    pickle.dump(loopThing, open('loopFunc.dat', 'w'))
+
     for loopI in range(10):
 
-        pickleBles = ParamsManager.filterUnpickles(newInputParams)
-        print pickle.dumps(pickleBles)
         newInputParams = loopThing(newInputParams)
 
 

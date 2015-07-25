@@ -36,7 +36,7 @@ def getPlottingPoints(xMin, xMax, yMin, yMax, evalFunc, delta = 2, debugMap = Fa
 
     # Z = np.transpose(Z)  # ToDo : Find out if it should be done
 
-    CS = plt.contour(X, Y, Z, [0])
+    CS = plt.contour(X, Y, Z, [0.5])
 
     if(debugMap):
         plt.clabel(CS, inline=1, fontsize=10)

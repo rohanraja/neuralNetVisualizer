@@ -75,8 +75,8 @@ def Looper(startInputParams, endConditionChecker):
 
 
 
-testInputParam = { 'i' : 0 }
+#testInputParam = { 'i' : 0 }
 
-print Looper(testInputParam, endCondition)
+#print Looper(testInputParam, endCondition)
 
 __author__ = 'rraja'

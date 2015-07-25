@@ -11,6 +11,7 @@ def loadParams(fileName):
 def filterUnpickles(inputParams):
 
     outputParams = {}
+    NonPicParams = {}
 
     for key in inputParams:
 
@@ -18,6 +19,7 @@ def filterUnpickles(inputParams):
             pickle.dumps(inputParams[key])
             outputParams[key] = inputParams[key]
         except:
-            pass
+            NonPicParams[key] = inputParams[key]
 
-    return outputParams
+
+    return outputParams, NonPicParams

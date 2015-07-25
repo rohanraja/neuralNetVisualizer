@@ -3,7 +3,7 @@ import numpy as np
 import pylab
 import plotter
 import json
-import featureMapper
+#import featureMapper
 import time
 
 import NeuralNetwork as nn
@@ -15,6 +15,7 @@ def sigmoid(x):
         return 1.0 / (1.0 + np.exp(-x))
     except :
         return 0
+
 
 class NeuralNetworkTrainer():
 
@@ -38,13 +39,16 @@ class NeuralNetworkTrainer():
 
             self.socketWriter = socketWriter
 
+            self.setNN()
+
+
             pass
 
         except:
             pass
 
 
-    def train(self):
+    def setNN(self):
 
         self.NN = nn.NeuralNetwork(hiddenLayerSize=int(self.degree))
 
@@ -56,10 +60,23 @@ class NeuralNetworkTrainer():
 
         self.initialCost = self.nnCost(self.betas)
 
+    def train(self):
+
         print "Initial Likelihood : ", self.initialCost
 
-        #self.betas = fmin_bfgs(self.nnCost, self.betas, fprime=self.nnCostPrime ,callback= self.onThetaIteration)
-        self.betas = myFminBFGS.fminLooped(self.nnCost, self.betas, fprime=self.nnCostPrime ,callback= self.onThetaIteration)
+        import dill
+
+        #nns = dill.source.getsource(self.NN)
+        #print nns, "************"
+        #print dill.dump(self.NN , open('/Users/rohanraja/Dropbox/Distributed Computing Startup/persist/Test.dat', 'w'))
+
+        nnCost = lambda W : self.NN.costFn(self.NN.deLinearize(W), self.x_train, self.y_train)
+        nnCostPrime = lambda W : self.NN.costFnPrime(self.NN.deLinearize(W), self.x_train, self.y_train)
+        self.betas = fmin_bfgs(self.nnCost, self.betas, fprime=self.nnCostPrime ,callback= self.onThetaIteration)
+        #dill.dumps(nnnCost)
+
+        #self.betas = myFminBFGS.fminLooped(nnCost, self.betas, fprime=nnCostPrime ,callback=self.onThetaIteration)
+        #self.betas = myFminBFGS.fminLooped(self.nnCost, self.betas, fprime=self.nnCostPrime ,callback= self.onThetaIteration)
 
         return "Trained"
 
@@ -87,9 +104,9 @@ class NeuralNetworkTrainer():
 
         cost = self.nnCost(theta)
 
-        print "LikelyHood: ", cost
+        print "LikelyHood is : ", cost
 
-        pointsDiv = 1.0
+        pointsDiv = 3.0
 
         plotPathPoints = plotter.getPlottingPoints(0,
                                                    float(self.inputData['widthSvg']) / self.divFactor,
@@ -118,12 +135,12 @@ class NeuralNetworkTrainer():
 
         listYhat = self.NN.forward(self.NN.deLinearize(self.betas), listXY)
 
-        ZBool = listYhat[:,0] > listYhat[:,1]
+        #ZBool = listYhat[:,0] > listYhat[:,1]
 
-        ZList = np.array([-1 if zbool else 1 for zbool in ZBool]) # ToDo : Optimize this statement
+        #ZList = np.array([-1 if zbool else 1 for zbool in ZBool]) # ToDo : Optimize this statement
+        #ZList = np.array([l[0] for l in listYhat]) # ToDo : Optimize this statement
 
-        Z = np.reshape(ZList, X.shape)
+        Z = np.reshape(listYhat[:,0], X.shape)
 
         return Z
-
 
