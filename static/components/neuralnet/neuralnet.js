@@ -9,29 +9,24 @@ app.controller("neuralnetCtrl", function($scope) {
 
   var draw_layer = function(nodes){
 
-    var node_radius = 20;
-
     var layer_circles = svg_nn.append("g");
 
-    var circle = layer_circles.selectAll("circle").data(nodes);
+    var circle = layer_circles.selectAll("g").data(nodes);
+
+    var nodeEnter = circle.enter().append('g');
+    nodeEnter.attr("transform", function(d, i) { return "translate(0, " + (i * 120 + d.radius) + ")" ; });
     
-    var circleEnter = circle.enter().append("circle");
-    
-    circleEnter.attr("cx", 0);
-    circleEnter.attr("cy", function(d, i) { return i * 120 + d.radius ; });
+    var circleEnter = nodeEnter.append("circle");
     circleEnter.attr("r", function(d) { return d.radius })
     .style("fill", "purple")
     .style("opacity", function(d){ return d.a_value });
-
-    svg_width = parseInt(svg_nn.style('width'));
-    svg_height = parseInt(svg_nn.style('height'));
     
-    group_height = layer_circles.node().getBBox().height  ; 
+    nodeEnter.append("text")
+      .attr("dy", "5")
+      .attr("text-anchor", "middle")
+      .text("20.76");
     
-    layer_left = svg_width/ 2;
-    layer_top = (svg_height - group_height)/ 2 ;
-
-    layer_circles.attr("transform", "translate("+ layer_left +"," + layer_top + ")");
+    return layer_circles ;
 
   };
 
@@ -59,7 +54,16 @@ app.controller("neuralnetCtrl", function($scope) {
 
   ];
 
-  draw_layer(test_nodes);
+  layer_middle = draw_layer(test_nodes);
 
+  svg_width = parseInt(svg_nn.style('width'));
+  svg_height = parseInt(svg_nn.style('height'));
+  
+  group_height = layer_middle.node().getBBox().height  ; 
+  
+  layer_left = svg_width/ 2;
+  layer_top = (svg_height - group_height)/ 2 ;
+
+  layer_middle.attr("transform", "translate("+ layer_left +"," + layer_top + ")");
 
 });
