@@ -31,7 +31,10 @@ app.service("nnet", function(){
   
   this.middle_nodes = [
 
-    {
+     {
+      'radius': 30,
+      'a_value': 0.7
+    },   {
       'radius': 30,
       'a_value': 0.7
     },
