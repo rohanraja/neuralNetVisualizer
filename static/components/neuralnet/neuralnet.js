@@ -1,13 +1,14 @@
 var app = angular.module("mlTut");
 
-app.controller("neuralnetCtrl", function($scope) {
+app.controller("neuralnetCtrl", function($scope, nnet) {
 
   $scope.numNodes = 5;
   
   var svg_nn = d3.select("#nnet_svg");
-  
+  var svg_width = parseInt(svg_nn.style('width'));
+  var svg_height = parseInt(svg_nn.style('height'));
 
-  var draw_layer = function(nodes){
+  var draw_layer = function(nodes, left_factor){
 
     var layer_circles = svg_nn.append("g");
 
@@ -26,44 +27,24 @@ app.controller("neuralnetCtrl", function($scope) {
       .attr("text-anchor", "middle")
       .text("20.76");
     
+    layer_left = svg_width * left_factor;
+    group_height = layer_circles.node().getBBox().height  ; 
+    layer_top = (svg_height - group_height)/ 2 ;
+
+    layer_circles.attr("transform", "translate("+ layer_left +"," + layer_top + ")");
+
     return layer_circles ;
 
   };
 
-  test_nodes = [
 
-    {
-      'radius': 30,
-      'a_value': 0.7
-    },
-    {
-      'radius': 30,
-      'a_value': 0.2
+  input_layer = draw_layer(nnet.input_nodes, 0.25);
+  layer_middle = draw_layer(nnet.middle_nodes, 0.5);
+  output_layer = draw_layer(nnet.output_nodes, 0.75);
 
-    },
-    {
-      'radius': 30,
-      'a_value': 1
 
-    },
-    {
-      'radius': 30,
-      'a_value': 0.5
 
-    }
 
-  ];
 
-  layer_middle = draw_layer(test_nodes);
-
-  svg_width = parseInt(svg_nn.style('width'));
-  svg_height = parseInt(svg_nn.style('height'));
-  
-  group_height = layer_middle.node().getBBox().height  ; 
-  
-  layer_left = svg_width/ 2;
-  layer_top = (svg_height - group_height)/ 2 ;
-
-  layer_middle.attr("transform", "translate("+ layer_left +"," + layer_top + ")");
 
 });
