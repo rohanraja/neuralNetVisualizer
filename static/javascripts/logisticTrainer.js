@@ -74,7 +74,7 @@ function LogTrainer (tData, pNumClasses, onRecvData) {
     	//var server_url = '/gradDesc';
 
     	
-		ws = new WebSocket("ws://"+ location.host +"/websocket");
+		ws = new WebSocket("wss://"+ location.host +"/websocket");
 
     	ws.onopen = (function(){
 

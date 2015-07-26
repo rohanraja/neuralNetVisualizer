@@ -159,5 +159,13 @@ handlers = [
 ]
 application = tornado.web.Application(handlers)
 if __name__ == "__main__":
-    application.listen(3001)
+
+    
+    CERT_FILE = 'certs/nginx.crt'
+    KEY_FILE = 'certs/nginx.key'
+    
+    application.listen(3001, ssl_options={
+    "certfile": CERT_FILE,
+    "keyfile": KEY_FILE,
+    })
     tornado.ioloop.IOLoop.instance().start()
