@@ -4,10 +4,11 @@ var app = angular.module("mlTut");
 app.controller("logregCtrl", function($scope) {
 
     $scope.message = "in controller";
-    $scope.degree = 2;
+    $scope.degree = 15;
     $scope.divFactor = 500;
     $scope.alpha = 0.00001;
     $scope.percentComplete = 0 ;
+    $scope.ml_algo = "nnet";
 
     $scope.plotPathfromVertices = function(data)
     {
@@ -38,6 +39,7 @@ app.controller("logregCtrl", function($scope) {
 		  trainer.degree = $scope.degree;
 		  trainer.divFactor = $scope.divFactor;
 		  trainer.alpha = $scope.alpha;
+      trainer.ml_algo = $scope.ml_algo;
 		  trainer.train();
     }
 

@@ -9,6 +9,12 @@ app.config(['$routeProvider',function ($routeprovider) {
             controller: 'logregCtrl'
         });
 $routeprovider.
+        when('/', {
+            templateUrl: '/static/components/neuralnet/neuralnet.html',
+            controller: 'neuralnetCtrl'
+        });
+
+$routeprovider.
         when('/nnets', {
             templateUrl: '/static/components/neuralnet/neuralnet.html',
             controller: 'neuralnetCtrl'

@@ -10,14 +10,29 @@
 
 <div id="progressReport" style="display:inline" class="col-md-5">
 
-  Degree : <input ng-model="degree" placeholder="Degree"  /><br>
-  DivFac : <input ng-model="divFactor" placeholder="DivFactor" /><br>
-  Alphav : <input ng-model="alpha" placeholder="alpha" />
+
+  <label>
+    <input type="radio" ng-model="ml_algo" value="logreg">
+    Logistic Regression
+  </label>  
+  <br>
+  <label>
+    <input type="radio" ng-model="ml_algo" value="nnet">
+    Neural Network
+  </label>
+
+
+  <br>
+  <br>
+
+  Degree/Neurons : <input ng-model="degree" placeholder="Degree"  /><br>
+  <!-- DivFac : <input ng&#45;model="divFactor" placeholder="DivFactor" /><br> -->
+  <!-- Alphav : <input ng&#45;model="alpha" placeholder="alpha" /> -->
 
     <br>
     <br>
 
-  Cost : {{cost}}
+  <b>Error</b> : {{cost*100}}
     <br>
 
     <br>

@@ -92,8 +92,10 @@ class EchoWebSocket(tornado.websocket.WebSocketHandler):
         samples = self.inputData['trainingData']['samples']
         X = [sample['inputVector'] for sample in samples]
         Y = [sample['outputVal'] for sample in samples]
-        lr2 = nnT.NeuralNetworkTrainer(X,Y, socketWriter=self.trainUpdater, inputData= self.inputData)
-        # lr2 = lrPoly.LogisticRegression(X,Y, socketWriter=self.trainUpdater, inputData= self.inputData)
+        if self.inputData['ml_algo'] == "nnet":
+            lr2 = nnT.NeuralNetworkTrainer(X,Y, socketWriter=self.trainUpdater, inputData= self.inputData)
+        else:
+            lr2 = lrPoly.LogisticRegression(X,Y, socketWriter=self.trainUpdater, inputData= self.inputData)
         lr2.train()
     def sendDataMessage(self, message, jobid):
         for updater in ALLHANDLERS[jobid]:
@@ -164,8 +166,9 @@ if __name__ == "__main__":
     CERT_FILE = 'certs/nginx.crt'
     KEY_FILE = 'certs/nginx.key'
     
-    application.listen(3001, ssl_options={
-    "certfile": CERT_FILE,
-    "keyfile": KEY_FILE,
-    })
+    application.listen(3001)
+    # application.listen(3001, ssl_options={
+    # "certfile": CERT_FILE,
+    # "keyfile": KEY_FILE,
+    # })
     tornado.ioloop.IOLoop.instance().start()
