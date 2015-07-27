@@ -11,10 +11,21 @@ app.service("nnetd3", function(){
 
     var layer_circles = svg_nn.append("g");
 
+    var circles = [];
+    var pos = { x: 0, y: 0 };
+
     var circle = layer_circles.selectAll("g").data(nodes);
 
     var nodeEnter = circle.enter().append('g');
-    nodeEnter.attr("transform", function(d, i) { return "translate(0, " + (i * 120 + d.radius) + ")" ; });
+    nodeEnter.attr("transform", function(d, i) { 
+      pos =  { x: 0, y: 0 };
+      pos.y = (i * 120 + d.radius);
+      circles.push(pos);
+      d.pos = pos ;
+      return "translate(0, " + pos.y + ")" ; 
+    
+    })
+    .attr("class", "node");
     
     var circleEnter = nodeEnter.append("circle");
     circleEnter.attr("r", function(d) { return d.radius })
@@ -24,18 +35,67 @@ app.service("nnetd3", function(){
     nodeEnter.append("text")
       .attr("dy", "5")
       .attr("text-anchor", "middle")
-      .text("20.76");
+      .text(function(d){return d.a_value});
     
     layer_left = svg_width * left_factor;
     group_height = layer_circles.node().getBBox().height  ; 
     layer_top = (svg_height - group_height)/ 2 ;
 
     layer_circles.attr("transform", "translate("+ layer_left +"," + layer_top + ")");
+    
 
-    return layer_circles ;
+    for(i=0; i<circles.length; i++){
+        
+      circles[i].x += layer_left ;
+      circles[i].y += layer_top ;
+      
+    }
+
+    return circles;
 
   };
 
+
+  this.connectCircles = function(c1, c2)
+  {
+    r1 = c1.getBoundingClientRect().left;
+
+  };
+
+  this.getCirclePosition = function(c){
+
+
+
+  };
+
+
+  this.draw_line = function(x1,y1,x2,y2){
+    
+    var lines = svg_nn.append("line")
+            .style("stroke", "black") // <<<<< Add a color
+            .attr("x1", function(d) { return x1 })
+            .attr("y1", function(d) { return y1 })
+            .attr("x2", function(d) { return x2 })
+            .attr("y2", function(d) {  return y2 })
+            .attr("stroke-width", "2")
+            .attr("class", "link");
+
+  }
+
+  drawLine = this.draw_line ;
+
+  this.connectLayers = function(l1,l2){
+    
+    l1.forEach(function(val){
+      
+      l2.forEach(function(val2){
+          
+        drawLine(val.x, val.y, val2.x, val2.y);
+        
+      });
+    });
+  
+  };
 
 });
   
