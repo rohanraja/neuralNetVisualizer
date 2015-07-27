@@ -88,12 +88,20 @@ app.service("nnetd3", function(){
 
   }
 
+  nodeRadius = 30;
+  arrowheadLength = 0;
 
   this.draw_arc = function(x1,y1,x2,y2, color, lid){
 
+    angle = Math.atan2(y2 - y1, x2 - x1);
+    X1 = x1 + Math.cos(angle) * (nodeRadius + arrowheadLength);
+    X2 = x2 - Math.cos(angle) * (nodeRadius + arrowheadLength);
+    Y1 = y1 + Math.sin(angle) * (nodeRadius + arrowheadLength);
+    Y2 = y2 - Math.sin(angle) * (nodeRadius + arrowheadLength);
+
     var d1 = d3.svg.diagonal()
-           .source( {"x":x1, "y":y1} )
-           .target( {"x":x2, "y":y2} );
+      .source( {"x":X1, "y":Y1} )
+      .target( {"x":X2, "y":Y2} );
 
     svg_nn.append("path")
     .attr("stroke", color)
