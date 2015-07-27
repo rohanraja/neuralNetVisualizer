@@ -11,9 +11,9 @@ app.controller("neuralnetCtrl", function($scope, nnet, nnetd3) {
   nnetd3.connectLayers(input_layer, layer_middle);
   nnetd3.connectLayers(layer_middle, output_layer);
 
-  // nnetd3.draw_line(input_layer[0].x, input_layer[0].y,
-                   // layer_middle[2].x, layer_middle[2].y 
-    // );
+  // nnetd3.draw_arc(input_layer[0].x, input_layer[0].y,
+  //                  layer_middle[2].x, layer_middle[2].y 
+  //   );
 
 
 });

@@ -19,7 +19,7 @@ app.service("nnetd3", function(){
     var nodeEnter = circle.enter().append('g');
     nodeEnter.attr("transform", function(d, i) { 
       pos =  { x: 0, y: 0 };
-      pos.y = (i * 120 + d.radius);
+      pos.y = (i * 190 + d.radius);
       circles.push(pos);
       d.pos = pos ;
       return "translate(0, " + pos.y + ")" ; 
@@ -56,19 +56,6 @@ app.service("nnetd3", function(){
   };
 
 
-  this.connectCircles = function(c1, c2)
-  {
-    r1 = c1.getBoundingClientRect().left;
-
-  };
-
-  this.getCirclePosition = function(c){
-
-
-
-  };
-
-
   this.createLink = function(node1, node2){
 
 
@@ -99,7 +86,32 @@ app.service("nnetd3", function(){
 
   }
 
-  drawLine = this.draw_line ;
+
+  this.draw_arc = function(x1,y1,x2,y2, color){
+
+    var d1 = d3.svg.diagonal()
+           .source( {"x":x1, "y":y1} )
+           .target( {"x":x2, "y":y2} );
+
+    svg_nn.append("path")
+    .attr("stroke", color)
+    .attr("stroke-width", "2")
+    .attr("class", "link")
+    .attr("d", d1)
+    .attr("id", "path1");
+
+    svg_nn.append("text").
+      style("font-size", "14px")
+      .style("text-anchor", "middle")
+      .append("textPath")
+      .attr("xlink:href", "#path1")
+      .attr("startOffset", "50%")
+      .text("0.234");
+
+  };
+
+
+  drawLine = this.draw_arc ;
 
   this.connectLayers = function(l1,l2){
    colors = ["red", "green", "blue", "black", "gray", "yellow"]; 
