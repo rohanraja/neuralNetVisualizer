@@ -43,11 +43,11 @@ app.service("nnet", function(){
       'a_value': 0.2
 
     },
-    // {
-    //   'radius': 30,
-    //   'a_value': 1
-    //
-    // },
+    {
+      'radius': 30,
+      'a_value': 1
+
+    },
     // {
     //   'radius': 30,
     //   'a_value': 0.5

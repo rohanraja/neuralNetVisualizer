@@ -7,11 +7,27 @@ app.service("nnetd3", function(){
   var svg_width = parseInt(svg_nn.style('width'));
   var svg_height = parseInt(svg_nn.style('height'));
 
+  var nodeRadius = 25;
+  var arrowheadLength = 1 ;
+
+  // ** Define arrow for links ** //
+  
+  svg_nn.append("svg:defs")
+    .append("svg:marker")
+    .attr("id", "arrow")
+    .attr("viewBox", "0 -5 10 10")
+    .attr("refX", 5)
+    .attr("markerWidth", 6)
+    .attr("markerHeight", 6)
+    .attr("orient", "auto")
+    .append("svg:path")
+    .attr("d", "M0,-5L10,0L0,5");
+
   this.draw_layer = function(nodes, left_factor){
 
     var layer_circles = svg_nn.append("g");
 
-    var gap = left_factor == 0.5 ? 190 : 180 ;
+    var gap = left_factor == 0.5 ? 180 : 200 ;
 
     var circles = [];
     var pos = { x: 0, y: 0 };
@@ -21,7 +37,7 @@ app.service("nnetd3", function(){
     var nodeEnter = circle.enter().append('g');
     nodeEnter.attr("transform", function(d, i) { 
       pos =  { x: 0, y: 0 };
-      pos.y = (i * gap + d.radius);
+      pos.y = (i * gap + nodeRadius);
       circles.push(pos);
       d.pos = pos ;
       return "translate(0, " + pos.y + ")" ; 
@@ -30,7 +46,7 @@ app.service("nnetd3", function(){
     .attr("class", "node");
     
     var circleEnter = nodeEnter.append("circle");
-    circleEnter.attr("r", function(d) { return d.radius })
+    circleEnter.attr("r", function(d) { return nodeRadius })
     .style("fill", "purple")
     .style("opacity", function(d){ return d.a_value });
     
@@ -88,8 +104,6 @@ app.service("nnetd3", function(){
 
   }
 
-  nodeRadius = 30;
-  arrowheadLength = 0;
 
   this.draw_arc = function(x1,y1,x2,y2, color, lid){
 
@@ -104,22 +118,9 @@ app.service("nnetd3", function(){
       .target( {"x":X2, "y":Y2} );
 
 
-    svg_nn.append("svg:defs")
- .append("svg:marker")
-  .attr("id", "arrow")
-  .attr("viewBox", "0 0 10 10")
-  .attr("refX", 5)
-  .attr("refY", 6)
-  .attr("markerUnits", "strokeWidth")
-  .attr("markerWidth", 8)
-  .attr("markerHeight", 6)
-  .attr("orient", "auto")
-  .append("svg:path")
-  .attr("d", "M 0 0 L 10 5 L 0 10 z");
-
     svg_nn.append("path")
     .attr("stroke", color)
-    .attr("stroke-width", "2")
+    .attr("stroke-width", "1px")
     .attr("class", "link")
     .attr("d", d1)
     .attr("id", "path"+lid)
