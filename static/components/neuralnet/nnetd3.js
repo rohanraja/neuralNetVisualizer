@@ -103,12 +103,27 @@ app.service("nnetd3", function(){
       .source( {"x":X1, "y":Y1} )
       .target( {"x":X2, "y":Y2} );
 
+
+    svg_nn.append("svg:defs")
+ .append("svg:marker")
+  .attr("id", "arrow")
+  .attr("viewBox", "0 0 10 10")
+  .attr("refX", 5)
+  .attr("refY", 6)
+  .attr("markerUnits", "strokeWidth")
+  .attr("markerWidth", 8)
+  .attr("markerHeight", 6)
+  .attr("orient", "auto")
+  .append("svg:path")
+  .attr("d", "M 0 0 L 10 5 L 0 10 z");
+
     svg_nn.append("path")
     .attr("stroke", color)
     .attr("stroke-width", "2")
     .attr("class", "link")
     .attr("d", d1)
-    .attr("id", "path"+lid);
+    .attr("id", "path"+lid)
+    .attr("marker-end", "url(\#arrow)")
 
     svg_nn.append("text").
       style("font-size", "14px")
