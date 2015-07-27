@@ -69,28 +69,46 @@ app.service("nnetd3", function(){
   };
 
 
-  this.draw_line = function(x1,y1,x2,y2){
+  this.createLink = function(node1, node2){
+
+
+
+  };
+
+  this.draw_line = function(x1,y1,x2,y2, color){
     
+    if(color == undefined)
+      color = "black";
+
     var lines = svg_nn.append("line")
-            .style("stroke", "black") // <<<<< Add a color
+            .style("stroke", color) 
             .attr("x1", function(d) { return x1 })
             .attr("y1", function(d) { return y1 })
             .attr("x2", function(d) { return x2 })
             .attr("y2", function(d) {  return y2 })
             .attr("stroke-width", "2")
             .attr("class", "link");
+    
+
+    var text = svg_nn.append("text")
+    .attr("x", (x1+x2)/2)
+    .attr("y", (y1+y2)/2)
+    .attr("text-anchor", "middle")
+    .text("0.234");
+
 
   }
 
   drawLine = this.draw_line ;
 
   this.connectLayers = function(l1,l2){
-    
-    l1.forEach(function(val){
+   colors = ["red", "green", "blue", "black", "gray", "yellow"]; 
+    l1.forEach(function(val, i){
       
+      color = colors[i];
       l2.forEach(function(val2){
           
-        drawLine(val.x, val.y, val2.x, val2.y);
+        drawLine(val.x, val.y, val2.x, val2.y, color);
         
       });
     });
