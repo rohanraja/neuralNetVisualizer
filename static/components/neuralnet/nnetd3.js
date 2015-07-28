@@ -124,7 +124,9 @@ app.service("nnetd3", function(){
     .attr("class", "link")
     .attr("d", d1)
     .attr("id", "path"+lid)
-    .attr("marker-end", "url(\#arrow)")
+    .attr("marker-end", "url(\#arrow)");
+
+
 
     svg_nn.append("text").
       style("font-size", "14px")
@@ -133,7 +135,6 @@ app.service("nnetd3", function(){
       .attr("xlink:href", "#path"+ lid)
       .attr("startOffset", "64%")
       .text("0.234");
-
   };
 
 

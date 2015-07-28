@@ -11,6 +11,26 @@ app.controller("neuralnetCtrl", function($scope, nnet, nnetd3) {
   nnetd3.connectLayers(input_layer, layer_middle);
   nnetd3.connectLayers(layer_middle, output_layer);
 
+  
+  $('text').popover({
+     'trigger':'click'
+    ,'title': 'Weight'
+    ,'content': '0.234'
+    ,'container': 'body'
+    ,'placement': 'top'
+    ,'white-space': 'nowrap'
+    ,'html':'true'
+    ,'template': '<div class="popover weight_popover"><div class="arrow"></div><input id="ex1" data-slider-id="ex1Slider" type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="14"/></div>'
+
+  });
+
+  $('#ex1').slider({
+  formatter: function(value) {
+    return 'Current value: ' + value;
+  }
+});
+
+
   // nnetd3.draw_arc(input_layer[0].x, input_layer[0].y,
   //                  layer_middle[2].x, layer_middle[2].y 
   //   );
