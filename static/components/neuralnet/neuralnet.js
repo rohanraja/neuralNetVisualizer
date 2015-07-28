@@ -13,22 +13,19 @@ app.controller("neuralnetCtrl", function($scope, nnet, nnetd3) {
 
   
   $('text').popover({
-     'trigger':'click'
+     'trigger':'focus'
     ,'title': 'Weight'
-    ,'content': '0.234'
+    ,'content': ''
     ,'container': 'body'
     ,'placement': 'top'
     ,'white-space': 'nowrap'
     ,'html':'true'
-    ,'template': '<div class="popover weight_popover"><div class="arrow"></div><input id="ex1" data-slider-id="ex1Slider" type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="14"/></div>'
+    ,'template': '<div class="popover weight_popover"><div class="arrow"></div>'
+   +'<input id="ex1" data-slider-id="ex1Slider" type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="14"/>'
+    +'<script tyle="text/javascript">$("#ex1").slider();</script></div>'
 
   });
 
-  $('#ex1').slider({
-  formatter: function(value) {
-    return 'Current value: ' + value;
-  }
-});
 
 
   // nnetd3.draw_arc(input_layer[0].x, input_layer[0].y,
