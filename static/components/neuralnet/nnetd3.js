@@ -40,6 +40,8 @@ app.service("nnetd3", function(){
       pos.y = (i * gap + nodeRadius);
       circles.push(pos);
       d.pos = pos ;
+      d.node_d3 = nodeEnter[0][i] ;   // Todo: Must exist a more elegant way to do this.
+
       return "translate(0, " + pos.y + ")" ; 
     
     })
@@ -73,36 +75,33 @@ app.service("nnetd3", function(){
 
   };
 
+  adjustCircleRadiusLink = function(link_arc){
+  
 
-  this.createLink = function(node1, node2){
+      angle = Math.atan2(link_arc.target.y - link_arc.source.y, link_arc.target.x - link_arc.source.x);
 
+      link_arc.source.x += Math.cos(angle) * (nodeRadius + arrowheadLength);
+      link_arc.target.x -= Math.cos(angle) * (nodeRadius + arrowheadLength);
+      
+      link_arc.source.y += Math.sin(angle) * (nodeRadius + arrowheadLength);
+      link_arc.target.y -= Math.sin(angle) * (nodeRadius + arrowheadLength);
 
-
+      return link_arc;       
   };
 
-  this.draw_line = function(x1,y1,x2,y2, color){
+  this.createLink = function(node1, node2){
     
-    if(color == undefined)
-      color = "black";
+    link_arc = {};
 
-    var lines = svg_nn.append("line")
-            .style("stroke", color) 
-            .attr("x1", function(d) { return x1 })
-            .attr("y1", function(d) { return y1 })
-            .attr("x2", function(d) { return x2 })
-            .attr("y2", function(d) {  return y2 })
-            .attr("stroke-width", "2")
-            .attr("class", "link");
+    link_arc.source = JSON.parse(JSON.stringify(node1.pos)) ;
+    link_arc.target = JSON.parse(JSON.stringify(node2.pos)) ;
+
+    link_arc = adjustCircleRadiusLink(link_arc);
+
+    node1.fadeOut();
     
 
-    var text = svg_nn.append("text")
-    .attr("x", (x1+x2)/2)
-    .attr("y", (y1+y2)/2)
-    .attr("text-anchor", "middle")
-    .text("0.234");
-
-
-  }
+  };
 
 
   this.draw_arc = function(x1,y1,x2,y2, color, lid){
