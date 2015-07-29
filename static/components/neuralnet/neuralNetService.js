@@ -22,33 +22,46 @@ function Node(a_value){
 
   this.a_value = a_value ;
   var node_d3, pos ;
+  
+  this.child_links = [];
+  this.parent_links = [];
+
+  this.createLink = function(target_node, weight){
+    
+    link = new Link(this, target_node, weight);
+    target_node.parent_links.push(link);
+    this.child_links.push(link);
+  }
 
 }
 
-inheritsFrom(Node, SvgElement);
-
-adjustCircleRadiusLink = function(link_arc){
 
 
-  angle = Math.atan2(link_arc.target.y - link_arc.source.y, link_arc.target.x - link_arc.source.x);
 
-  link_arc.source.x += Math.cos(angle) * (nodeRadius + arrowheadLength);
-  link_arc.target.x -= Math.cos(angle) * (nodeRadius + arrowheadLength);
-
-  link_arc.source.y += Math.sin(angle) * (nodeRadius + arrowheadLength);
-  link_arc.target.y -= Math.sin(angle) * (nodeRadius + arrowheadLength);
-
-  return link_arc;       
-};
+var lid = 0;
 
 function Link(node1, node2, weight){
   
   this.source_node = node1;
   this.target_node = node2;
   
-  this.weight = 0.23;
+  this.weight = weight;
+  
+  adjustCircleRadiusLink = function(link_arc){
 
-  this.createLink = function(){
+
+    angle = Math.atan2(link_arc.target.y - link_arc.source.y, link_arc.target.x - link_arc.source.x);
+
+    link_arc.source.x += Math.cos(angle) * (nodeRadius + arrowheadLength);
+    link_arc.target.x -= Math.cos(angle) * (nodeRadius + arrowheadLength);
+
+    link_arc.source.y += Math.sin(angle) * (nodeRadius + arrowheadLength);
+    link_arc.target.y -= Math.sin(angle) * (nodeRadius + arrowheadLength);
+
+    return link_arc;       
+  };
+
+  getLinkPositions = function(){
     
     link_arc = {};
 
@@ -57,15 +70,48 @@ function Link(node1, node2, weight){
 
     link_arc = adjustCircleRadiusLink(link_arc);
 
-    node1.fadeOut();
+    return link_arc;
     
 
   };
 
   this.draw = function(){
-
+    
+    this.link_positions = getLinkPositions();
+    this.node_d3 = this.drawArc() ;
 
   };
+
+  this.drawArc = function(){
+
+    var d1 = d3.svg.diagonal()
+      .source(this.link_positions.source)
+      .target(this.link_positions.target);
+
+
+    this.svg.append("path")
+    .attr("stroke", "black")
+    .attr("stroke-width", "1px")
+    .attr("class", "link")
+    .attr("d", d1)
+    .attr("id", "path"+lid)
+    .attr("marker-end", "url(\#arrow)");
+
+
+
+    this.svg.append("text").
+      style("font-size", "14px")
+      .style("text-anchor", "middle")
+      .append("textPath")
+      .attr("xlink:href", "#path"+ lid)
+      .attr("startOffset", "64%")
+      .text(this.weight);
+    
+    lid++;
+
+  };
+
+  this.draw();
 
 }
 
@@ -133,7 +179,6 @@ function Layer(nodeList, position){
 
 }
 
-inheritsFrom(Layer, SvgElement);
 
 
 function Connection_NN(w_matrix, source_layer, target_layer){
@@ -141,14 +186,18 @@ function Connection_NN(w_matrix, source_layer, target_layer){
   this.w_matrix = w_matrix;
   this.source_layer = source_layer;
   this.target_layer = target_layer;
-  
+
 
   this.draw = function(){
     
     this.w_matrix.forEach(function(val, i){
+
+      source_node = source_layer.nodes[i];
       
       val.forEach(function(val_target, i_target){
-        
+
+        target_node = target_layer.nodes[i_target];
+        source_node.createLink(target_node, val_target);
        
       });
 
@@ -156,6 +205,8 @@ function Connection_NN(w_matrix, source_layer, target_layer){
 
 
   };
+
+  this.draw();
  
 }
 
@@ -163,7 +214,8 @@ function Connection_NN(w_matrix, source_layer, target_layer){
 function NeuralNetwork(w_matrix_all){
 
   this.w_matrix_all = w_matrix_all;
-  this.layers = [];
+  layers = [];
+  this.layers = layers;
   
   var createLayer = function(numNodes, pos){
     var nodes = [];
@@ -183,9 +235,18 @@ function NeuralNetwork(w_matrix_all){
   this.w_matrix_all.forEach(function(val,i){
        
       if(i==0)
-        createLayer(val.length, i);
+      {
+        l = createLayer(val.length, i);
+        layers.push(l);
+      }
+        
 
-      createLayer(val[0].length, i+1);
+      l = createLayer(val[0].length, i+1);
+      layers.push(l);
+
+      
+      conn_1 = new Connection_NN(val, layers[i], layers[i+1]);
+      
 
   });
 
@@ -199,6 +260,11 @@ SvgElement.prototype.svg = d3.select("#nnet_svg");
 SvgElement.prototype.svg_width = parseInt($("#nnet_svg").css('width'));
 SvgElement.prototype.svg_height = parseInt($("#nnet_svg").css('height'));
 SvgElement.prototype.num_layers = 3;
+
+
+inheritsFrom(Layer, SvgElement);
+inheritsFrom(Link, SvgElement);
+inheritsFrom(Node, SvgElement);
 
 
  this.input_nodes = [
