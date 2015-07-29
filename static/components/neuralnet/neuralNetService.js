@@ -4,11 +4,6 @@ nodeRadius = 25;    // Make one variable for this
 arrowheadLength = 1;
 
 function SvgElement(){
-  this.svg = d3.select("#nnet_svg");
-  this.svg_width = parseInt(svg_nn.style('width'));
-  this.svg_height = parseInt(svg_nn.style('height'));
-
-  this.num_layers = 3;
 
 }
 
@@ -16,7 +11,10 @@ SvgElement.prototype.fadeOut = function(){
   $(this.node_d3).attr("opacity", "0.2");
 }
 
+
+
 var inheritsFrom = function (child, parent) {
+    
     child.prototype = Object.create(parent.prototype);
 };
 
@@ -84,12 +82,12 @@ function Layer(nodeList, position){
   
     var layer_circles = this.svg.append("g");
 
-    var gap = left_factor == 0.5 ? 180 : 200 ;
+    var gap = this.leftFactor == 0.5 ? 180 : 200 ;
 
     var circles = [];
     var pos = { x: 0, y: 0 };
 
-    var circle = layer_circles.selectAll("g").data(nodes);
+    var circle = layer_circles.selectAll("g").data(this.nodes);
 
     var nodeEnter = circle.enter().append('g');
     nodeEnter.attr("transform", function(d, i) { 
@@ -99,7 +97,7 @@ function Layer(nodeList, position){
       d.pos = pos ;
       d.node_d3 = nodeEnter[0][i] ;   // Todo: Must exist a more elegant way to do this.
 
-      return "translate(0, " + pos.y + ")" ; 
+      return "translate(0, " + pos.y + ")" ;  
     
     })
     .attr("class", "node");
@@ -114,7 +112,7 @@ function Layer(nodeList, position){
       .attr("text-anchor", "middle")
       .text(function(d){return d.a_value});
     
-    layer_left = this.svg_width * left_factor;
+    layer_left = this.svg_width * this.leftFactor;
     group_height = layer_circles.node().getBBox().height  ; 
     layer_top = (this.svg_height - group_height)/ 2 ;
 
@@ -135,6 +133,8 @@ function Layer(nodeList, position){
 
 }
 
+inheritsFrom(Layer, SvgElement);
+
 
 function Connection_NN(w_matrix, initial_position){
 
@@ -147,14 +147,14 @@ function Connection_NN(w_matrix, initial_position){
 
     this.w_matrix.forEach(function(val, i){
 
-      source_node = new Node(0);
+      source_node = new Node(0.6);
       source_nodes.push(source_node);
       
       val.forEach(function(val_target, i_target){
         
         if(i==0)
         {
-          target_node = new Node(0);
+          target_node = new Node(0.7);
           target_nodes.push(target_node);
         }
         else
@@ -168,6 +168,10 @@ function Connection_NN(w_matrix, initial_position){
     
     source_layer = new Layer(source_nodes, initial_position);
     target_layer = new Layer(target_nodes, initial_position+1);
+
+    source_layer.draw();
+    target_layer.draw();
+
     
     console.log(source_layer);
 
@@ -176,10 +180,16 @@ function Connection_NN(w_matrix, initial_position){
  
 }
 
-inheritsFrom(Layer, SvgElement);
 
 app.service("nnet", function(){
   
+
+
+SvgElement.prototype.svg = d3.select("#nnet_svg");
+SvgElement.prototype.svg_width = parseInt($("#nnet_svg").css('width'));
+SvgElement.prototype.svg_height = parseInt($("#nnet_svg").css('height'));
+SvgElement.prototype.num_layers = 3;
+
 
  this.input_nodes = [
 
