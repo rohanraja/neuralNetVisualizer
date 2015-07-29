@@ -8,7 +8,11 @@ function SvgElement(){
 }
 
 SvgElement.prototype.fadeOut = function(){
-  $(this.node_d3).attr("opacity", "0.2");
+  $(this.node_d3).attr("opacity", "0.1");
+}
+
+SvgElement.prototype.fadeIn = function(){
+  $(this.node_d3).attr("opacity", "1");
 }
 
 
@@ -31,6 +35,7 @@ function Node(a_value){
     link = new Link(this, target_node, weight);
     target_node.parent_links.push(link);
     this.child_links.push(link);
+    return link
   }
 
 }
@@ -175,6 +180,8 @@ function Layer(nodeList, position){
       
     }
 
+    this.node_d3 = layer_circles[0] ;
+
     return circles;
 
 
@@ -189,7 +196,8 @@ function Connection_NN(w_matrix, source_layer, target_layer){
   this.w_matrix = w_matrix;
   this.source_layer = source_layer;
   this.target_layer = target_layer;
-
+  
+  allLinks = [];
 
   this.draw = function(){
     
@@ -200,14 +208,29 @@ function Connection_NN(w_matrix, source_layer, target_layer){
       val.forEach(function(val_target, i_target){
 
         target_node = target_layer.nodes[i_target];
-        source_node.createLink(target_node, val_target);
+        link = source_node.createLink(target_node, val_target);
+        allLinks.push(link);
        
       });
 
     });
 
 
+    allLinks.forEach(function(val){
+    
+    allSvgs = allSvgs.add(val.node_d3);
+
+    });
+   this.node_d3 = allSvgs;
+
+
   };
+  
+  allSvgs = $();
+
+
+
+  
 
   this.draw();
  
@@ -219,6 +242,8 @@ function NeuralNetwork(w_matrix_all){
   this.w_matrix_all = w_matrix_all;
   layers = [];
   this.layers = layers;
+  connections = [];
+  this.connections = connections;
   
   var createLayer = function(numNodes, pos){
     var nodes = [];
@@ -248,7 +273,8 @@ function NeuralNetwork(w_matrix_all){
       layers.push(l);
 
       
-      conn_1 = new Connection_NN(val, layers[i], layers[i+1]);
+      conn = new Connection_NN(val, layers[i], layers[i+1]);
+      connections.push(conn);
       
 
   });
@@ -268,6 +294,7 @@ SvgElement.prototype.num_layers = 3;
 inheritsFrom(Layer, SvgElement);
 inheritsFrom(Link, SvgElement);
 inheritsFrom(Node, SvgElement);
+inheritsFrom(Connection_NN, SvgElement);
 
 
  this.input_nodes = [
@@ -314,10 +341,12 @@ inheritsFrom(Node, SvgElement);
 
   var network = new NeuralNetwork(w_matrix_all);
   
-  network.layers[0].nodes[0].child_links[1].fadeOut()
+  network.layers[0].nodes[1].child_links[0].fadeOut()
+  
+  network.connections[1].fadeOut();
 
-  //conn_1 = new Connection_NN(w1, 0);
-  //conn_1.draw();
+  network.layers[2].fadeOut();
+
 
 
 });
