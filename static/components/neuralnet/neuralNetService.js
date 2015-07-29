@@ -92,7 +92,7 @@ function Link(node1, node2, weight){
     this.svg.append("path")
     .attr("stroke", "black")
     .attr("stroke-width", "1px")
-    .attr("class", "link")
+    .attr("class", "link link_"+lid)
     .attr("d", d1)
     .attr("id", "path"+lid)
     .attr("marker-end", "url(\#arrow)");
@@ -105,9 +105,12 @@ function Link(node1, node2, weight){
       .append("textPath")
       .attr("xlink:href", "#path"+ lid)
       .attr("startOffset", "64%")
+      .attr("class", "link_"+lid)
       .text(this.weight);
     
     lid++;
+
+    return $(".link_"+ (lid-1));
 
   };
 
@@ -311,6 +314,7 @@ inheritsFrom(Node, SvgElement);
 
   var network = new NeuralNetwork(w_matrix_all);
   
+  network.layers[0].nodes[0].child_links[1].fadeOut()
 
   //conn_1 = new Connection_NN(w1, 0);
   //conn_1.draw();
