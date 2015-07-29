@@ -136,50 +136,60 @@ function Layer(nodeList, position){
 inheritsFrom(Layer, SvgElement);
 
 
-function Connection_NN(w_matrix, initial_position){
+function Connection_NN(w_matrix, source_layer, target_layer){
 
   this.w_matrix = w_matrix;
+  this.source_layer = source_layer;
+  this.target_layer = target_layer;
+  
 
   this.draw = function(){
     
-    source_nodes = [];
-    target_nodes = [];
-
     this.w_matrix.forEach(function(val, i){
-
-      source_node = new Node(0.6);
-      source_nodes.push(source_node);
       
       val.forEach(function(val_target, i_target){
         
-        if(i==0)
-        {
-          target_node = new Node(0.7);
-          target_nodes.push(target_node);
-        }
-        else
-          target_node = target_nodes[i_target];
-
-        
-        
+       
       });
 
     });
-    
-    source_layer = new Layer(source_nodes, initial_position);
-    target_layer = new Layer(target_nodes, initial_position+1);
-
-    source_layer.draw();
-    target_layer.draw();
-
-    
-    console.log(source_layer);
 
 
   };
  
 }
 
+
+function NeuralNetwork(w_matrix_all){
+
+  this.w_matrix_all = w_matrix_all;
+  this.layers = [];
+  
+  var createLayer = function(numNodes, pos){
+    var nodes = [];
+
+    for(i=0; i<numNodes; i++)
+    {
+      n = new Node(0.5);
+      nodes.push(n);
+    }
+
+    l = new Layer(nodes, pos);
+    l.draw();
+    return l;
+
+  };
+
+  this.w_matrix_all.forEach(function(val,i){
+       
+      if(i==0)
+        createLayer(val.length, i);
+
+      createLayer(val[0].length, i+1);
+
+  });
+
+}
 
 app.service("nnet", function(){
   
@@ -218,17 +228,26 @@ SvgElement.prototype.num_layers = 3;
   layer_1 = new Layer(this.middle_nodes, 1);
   layer_2 = new Layer(this.output_nodes, 2);
 
-
-  // layer_0.draw();
-
   
   w1 = [
     [2,3,5,6],
     [9,2,1,2]  
   ];
 
-  conn_1 = new Connection_NN(w1, 0);
-  conn_1.draw();
+  w2 = [
+    [2,5],
+    [4,6],
+    [7,3],
+    [9,9]
+  ];
+
+  var w_matrix_all = [w1,w2];
+
+  var network = new NeuralNetwork(w_matrix_all);
+  
+
+  //conn_1 = new Connection_NN(w1, 0);
+  //conn_1.draw();
 
 
 });
