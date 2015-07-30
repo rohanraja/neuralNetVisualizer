@@ -24,7 +24,9 @@ fadeGenerator = function(link_ref){
     network.connections[1].fadeOut();    
     $('.node').attr('opacity', 0.1);
 
-    link_ref.fadedHighlight();    
+    link_ref.fadedHighlight();
+
+    $('.pathHoverHelpers').attr("opacity", 0);    
 
   }
 }
@@ -37,6 +39,7 @@ SvgElement.prototype.hoverFade = function(){
     network.connections[0].fadeIn();
     network.connections[1].fadeIn();
      $('.node').attr('opacity', 1);
+     $('.pathHoverHelpers').attr("opacity", 0);
 
 
   };
@@ -69,7 +72,6 @@ function Node(a_value){
 
   this.fadedHighlight = function(){
     
-    this.fadeIn();
     this.child_links.forEach(function(val){
       val.fadedHighlight();
     });
@@ -127,7 +129,13 @@ function Link(node1, node2, weight, color){
     
     this.link_positions = getLinkPositions();
     this.node_d3 = this.drawArc() ;
+        
     this.hoverFade();
+    
+
+//     HoverFade = this.hoverFade;
+    
+//     $('.pathHoverHelpers').on("mouseover", fadeGenerator(this));
 
   };
 
@@ -146,11 +154,12 @@ function Link(node1, node2, weight, color){
     .attr("id", "path"+lid)
     .attr("marker-end", "url(\#arrow)");
 
-//         this.svg.append("path")
-//     .attr("stroke", this.color)
-//     .attr("stroke-width", "6px")
-//     .attr("d", d1)
-//     .attr("visibility", "hidden");
+        this.svg.append("path")
+    .attr("stroke", this.color)
+    .attr("class", "pathHoverHelpers link_"+lid)
+    .attr("stroke-width", "15px")
+    .attr("d", d1)
+    .attr("opacity", "0");
 
     this.svg.append("text").
       style("font-size", "14px")
