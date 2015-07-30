@@ -8,13 +8,42 @@ function SvgElement(){
 }
 
 SvgElement.prototype.fadeOut = function(){
-  $(this.node_d3).attr("opacity", "0.2");
+  $(this.node_d3).attr("opacity", "0.1");
 }
 
 SvgElement.prototype.fadeIn = function(){
   $(this.node_d3).attr("opacity", "1");
 }
 
+var network ;
+
+fadeGenerator = function(link_ref){
+  return function(){
+
+    network.connections[0].fadeOut();
+    network.connections[1].fadeOut();    
+    $('.node').attr('opacity', 0.1);
+
+    link_ref.fadedHighlight();    
+
+  }
+}
+
+SvgElement.prototype.hoverFade = function(){
+  
+  onHoverOut = function(){
+    
+    $('#nnet_svg').children().attr('opacity', 1);
+    network.connections[0].fadeIn();
+    network.connections[1].fadeIn();
+     $('.node').attr('opacity', 1);
+
+
+  };
+
+  $(this.node_d3).hover(fadeGenerator(this), onHoverOut) ;
+
+}
 
 
 var inheritsFrom = function (child, parent) {
@@ -37,6 +66,18 @@ function Node(a_value){
     this.child_links.push(link);
     return link
   }
+
+  this.fadedHighlight = function(){
+    
+    this.fadeIn();
+    this.child_links.forEach(function(val){
+      val.fadedHighlight();
+    });
+    this.parent_links.forEach(function(val){
+      val.fadedHighlight();
+    });
+
+  };
 
 }
 
@@ -86,6 +127,7 @@ function Link(node1, node2, weight, color){
     
     this.link_positions = getLinkPositions();
     this.node_d3 = this.drawArc() ;
+    this.hoverFade();
 
   };
 
@@ -104,7 +146,11 @@ function Link(node1, node2, weight, color){
     .attr("id", "path"+lid)
     .attr("marker-end", "url(\#arrow)");
 
-
+//         this.svg.append("path")
+//     .attr("stroke", this.color)
+//     .attr("stroke-width", "6px")
+//     .attr("d", d1)
+//     .attr("visibility", "hidden");
 
     this.svg.append("text").
       style("font-size", "14px")
@@ -114,6 +160,7 @@ function Link(node1, node2, weight, color){
       .attr("startOffset", "64%")
       .attr("class", "link_"+lid)
       .text(this.weight);
+      
     
     lid++;
 
@@ -122,6 +169,12 @@ function Link(node1, node2, weight, color){
   };
 
   this.draw();
+
+  this.fadedHighlight = function(){
+    this.fadeIn();
+    this.source_node.fadeIn();
+    this.target_node.fadeIn();
+  };
 
 }
 
@@ -152,6 +205,7 @@ function Layer(nodeList, position){
       circles.push(pos);
       d.pos = pos ;
       d.node_d3 = nodeEnter[0][i] ;   // Todo: Must exist a more elegant way to do this.
+      d.hoverFade();
 
       return "translate(0, " + pos.y + ")" ;  
     
@@ -201,7 +255,7 @@ function Connection_NN(w_matrix, source_layer, target_layer){
   
   allLinks = [];
 
-  colors = ["Red", "Blue", "Green", "Black", "Yellow"];
+  colors = ["purple", "Blue", "Green", "black", "Yellow"];
 
   this.draw = function(){
     
@@ -346,9 +400,9 @@ inheritsFrom(NeuralNetwork, SvgElement);
 
   var w_matrix_all = [w1,w2];
 
-  var network = new NeuralNetwork(w_matrix_all);
+  network = new NeuralNetwork(w_matrix_all);
   
-  network.layers[0].nodes[1].child_links[0].fadeOut()
+  //network.layers[0].nodes[1].child_links[0].fadeOut();
   
   //network.connections[1].fadeOut();
 

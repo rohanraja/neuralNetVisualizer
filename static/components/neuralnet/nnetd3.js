@@ -131,6 +131,7 @@ app.service("nnetd3", function(){
       style("font-size", "14px")
       .style("text-anchor", "middle")
       .append("textPath")
+      .style("color", color)
       .attr("xlink:href", "#path"+ lid)
       .attr("startOffset", "64%")
       .text("0.234");
