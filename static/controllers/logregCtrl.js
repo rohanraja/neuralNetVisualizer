@@ -20,8 +20,6 @@ app.controller("logregCtrl", function($scope, nnet) {
         $scope.percentComplete = resultData.percentComplete ;
         $scope.$apply('percentComplete') ;
 
-        console.log("Weights: ");
-        console.log(resultData.weights);
         $scope.network.updateWeights(resultData.weights);
 
         plotPathData(points);
@@ -45,7 +43,6 @@ app.controller("logregCtrl", function($scope, nnet) {
       trainer.ml_algo = $scope.ml_algo;
 		  trainer.train();
 
-      $scope.network = new NeuralNetwork(nnet.w_matrix_all);
     }
 
 
@@ -55,6 +52,7 @@ app.controller("logregCtrl", function($scope, nnet) {
                                     .style("border", "1px solid")
                                     .style("display", "inline");
 
+     $scope.network = new NeuralNetwork(nnet.w_matrix_all);
 
     
 });

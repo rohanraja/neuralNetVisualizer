@@ -55,9 +55,27 @@ function NeuralNetwork(w_matrix_all){
   this.node_d3 = $('#nnet_svg');
 
 
-  this.updateWeights = function(){
-    // Todo: Implement
-    //
+  this.updateWeights = function(weights){
+    
+    console.log("Updating Weights");
+    console.log(weights);
+
+    connections.forEach(function(val){
+
+      val.remove();
+      
+    });
+
+    connections = [];
+
+    weights.forEach(function(val, i){
+    
+      conn = new Connection_NN(val, layers[i], layers[i+1]);
+      connections.push(conn);
+    
+    });
+
+
   };
 
 }

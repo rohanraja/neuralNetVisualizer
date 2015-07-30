@@ -38,8 +38,11 @@ function Connection_NN(w_matrix, source_layer, target_layer){
   allSvgs = $();
 
 
+  this.remove = function(){
+    
+    $(this.node_d3).remove();
 
-  
+  };
 
   this.draw();
  
