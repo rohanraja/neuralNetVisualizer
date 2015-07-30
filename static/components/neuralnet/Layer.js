@@ -10,7 +10,7 @@ function Layer(nodeList, position){
   
     var layer_circles = this.svg.append("g");
 
-    var gap = this.leftFactor == 0.5 ? 180 : 200 ;
+    var gap = this.leftFactor == 0.5 ? 150 : 200 ;
 
     var circles = [];
     var pos = { x: 0, y: 0 };

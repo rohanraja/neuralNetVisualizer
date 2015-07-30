@@ -1,7 +1,7 @@
 var app = angular.module("mlTut");
 // var app = angular.module("mlTut", ['ui.bootstrap']);
 
-app.controller("logregCtrl", function($scope) {
+app.controller("logregCtrl", function($scope, nnet) {
 
     $scope.message = "in controller";
     $scope.degree = 15;
@@ -26,13 +26,12 @@ app.controller("logregCtrl", function($scope) {
 
     $scope.onTrainClick = function()
     {
-		var tuples = [];
+      var tuples = [];
 
 		  $.each(jsonCircles, function(i, val){
 
 		      tuples.push(new Tuple([val.x_axis,val.y_axis],val.category));
 		  });
-
 
 		  var dataSet = new DataSet(tuples,2);
 		  trainer = new LogTrainer(dataSet,2, $scope.plotPathfromVertices);

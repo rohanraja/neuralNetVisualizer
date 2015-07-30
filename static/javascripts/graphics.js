@@ -111,7 +111,7 @@ function drawHeatMat(gridPoints, size)
 function plotPathData(points)
 {
 
-  $('path').remove();
+  $('#svggg path').remove();
   
   var lineFunc = d3.svg.line()
                                   .x(function(d) {
