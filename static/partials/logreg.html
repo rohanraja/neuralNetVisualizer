@@ -1,4 +1,4 @@
-<br><br><br><br>
+<br>
 
 <button class='btn btn-danger' id='classbtn' onClick="changeClass()">ChangeClass</button>
 <button class='btn btn-success' ng-click="onTrainClick() ">Train</button>
@@ -6,7 +6,21 @@
 <br>
 
 <div class="row">
-<div id="svggg" class="col-md-7"></div>
+<div class="col-md-7">
+  <p id="svggg">
+  </p>
+
+  <b>Error</b> : {{cost*100}}
+    <br>
+
+    <br>
+
+  <div class="progress">
+    <div class="progress-bar" role="progressbar" aria-valuenow="{{percentComplete}}" aria-valuemin="0" aria-valuemax="100" style="width:{{percentComplete}}%">
+      {{percentComplete | number : 1}} %
+    </div>
+  </div>
+</div>
 
 <div id="progressReport" style="display:inline" class="col-md-5">
 
@@ -31,7 +45,6 @@
 
 
   <br>
-  <br>
 
   Degree/Neurons : <input ng-model="degree" placeholder="Degree"  /><br>
   <!-- DivFac : <input ng&#45;model="divFactor" placeholder="DivFactor" /><br> -->
@@ -40,16 +53,6 @@
     <br>
     <br>
 
-  <b>Error</b> : {{cost*100}}
-    <br>
-
-    <br>
-
-  <div class="progress">
-    <div class="progress-bar" role="progressbar" aria-valuenow="{{percentComplete}}" aria-valuemin="0" aria-valuemax="100" style="width:{{percentComplete}}%">
-      {{percentComplete | number : 1}} %
-    </div>
-  </div>
 
 
 
