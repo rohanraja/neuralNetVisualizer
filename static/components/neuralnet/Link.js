@@ -80,7 +80,7 @@ function Link(node1, node2, weight, color){
       .attr("xlink:href", "#path"+ lid)
       .attr("startOffset", "64%")
       .attr("class", "link_"+lid)
-      .text(this.weight);
+      .text(parseFloat(this.weight).toFixed(3));
       
     
     lid++;
