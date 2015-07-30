@@ -20,7 +20,10 @@ app.controller("logregCtrl", function($scope, nnet) {
         $scope.percentComplete = resultData.percentComplete ;
         $scope.$apply('percentComplete') ;
 
-        $scope.network.updateWeights(resultData.weights);
+        if($scope.network == undefined)
+          $scope.network = new NeuralNetwork(resultData.weights);
+        else
+          $scope.network.updateWeights(resultData.weights);
 
         plotPathData(points);
 
@@ -42,6 +45,11 @@ app.controller("logregCtrl", function($scope, nnet) {
 		  trainer.alpha = $scope.alpha;
       trainer.ml_algo = $scope.ml_algo;
 		  trainer.train();
+      if($scope.network != undefined)
+      {  
+          $scope.network.remove();
+          $scope.network = undefined ;
+      }
 
     }
 
@@ -52,7 +60,7 @@ app.controller("logregCtrl", function($scope, nnet) {
                                     .style("border", "1px solid")
                                     .style("display", "inline");
 
-     $scope.network = new NeuralNetwork(nnet.w_matrix_all);
+     // $scope.network = new NeuralNetwork(nnet.w_matrix_all);
 
     
 });

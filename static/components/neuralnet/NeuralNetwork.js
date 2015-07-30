@@ -5,12 +5,6 @@ function NeuralNetwork(w_matrix_all){
   SvgElement.prototype.svg_height = parseInt($("#nnet_svg").css('height'));
   SvgElement.prototype.num_layers = 3;
 
-  inheritsFrom(Layer, SvgElement);
-  inheritsFrom(Link, SvgElement);
-  inheritsFrom(Node, SvgElement);
-  inheritsFrom(Connection_NN, SvgElement);
-  inheritsFrom(NeuralNetwork, SvgElement);
-
 
   this.w_matrix_all = w_matrix_all;
   layers = [];
@@ -52,14 +46,11 @@ function NeuralNetwork(w_matrix_all){
 
   });
   
-  this.node_d3 = $('#nnet_svg');
+  this.node_d3 = $('#nnet_svg').children();
 
 
   this.updateWeights = function(weights){
     
-    console.log("Updating Weights");
-    console.log(weights);
-
     connections.forEach(function(val){
 
       val.remove();
@@ -78,6 +69,17 @@ function NeuralNetwork(w_matrix_all){
 
   };
 
+  this.remove = function(){
+
+    $('#nnet_svg').html('');
+  };
+
 }
 
+
+  inheritsFrom(Layer, SvgElement);
+  inheritsFrom(Link, SvgElement);
+  inheritsFrom(Node, SvgElement);
+  inheritsFrom(Connection_NN, SvgElement);
+  inheritsFrom(NeuralNetwork, SvgElement);
 

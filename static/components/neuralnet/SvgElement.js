@@ -43,6 +43,11 @@ SvgElement.prototype.hoverFade = function(){
 
 }
 
+SvgElement.prototype.remove = function(){
+
+  $(this.node_d3).remove();
+
+};
 
 var inheritsFrom = function (child, parent) {
     
