@@ -53,7 +53,7 @@ app.controller("logregCtrl", function($scope, nnet) {
 
     }
 
-
+    widthSvg = parseInt($('#svggg').css("width"));
      svgContainer = d3.select("#svggg").append("svg")
                                     .attr("width", widthSvg)
                                     .attr("height", heightSvg).on("click", mousemove)

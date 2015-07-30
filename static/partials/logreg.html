@@ -7,19 +7,18 @@
 
 <div class="row">
 <div class="col-md-7">
-  <p id="svggg">
+  <p id="svggg" style="width:100%">
   </p>
 
-  <b>Error</b> : {{cost*100}}
-    <br>
-
-    <br>
 
   <div class="progress">
     <div class="progress-bar" role="progressbar" aria-valuenow="{{percentComplete}}" aria-valuemin="0" aria-valuemax="100" style="width:{{percentComplete}}%">
       {{percentComplete | number : 1}} %
     </div>
   </div>
+  
+
+  <b>Error</b> : {{cost*100}}
 </div>
 
 <div id="progressReport" style="display:inline" class="col-md-5">
