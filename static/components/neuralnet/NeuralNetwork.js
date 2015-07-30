@@ -54,6 +54,12 @@ function NeuralNetwork(w_matrix_all){
   
   this.node_d3 = $('#nnet_svg');
 
+
+  this.updateWeights = function(){
+    // Todo: Implement
+    //
+  };
+
 }
 
 

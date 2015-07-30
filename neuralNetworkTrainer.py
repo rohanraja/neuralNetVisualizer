@@ -121,7 +121,10 @@ class NeuralNetworkTrainer():
         result['plotPath'] = list([list(point*self.divFactor) for point in plotPathPoints])
         result['cost'] = cost
         result['percentComplete'] = 100 - ((cost *100) / self.initialCost)
-
+        weights = ( self.NN.deLinearize(theta) )
+        weights = [w.tolist() for w in weights]
+        result['weights'] = weights
+        
         self.socketWriter(json.dumps(result))
 
     def predMatrix(self,X ,Y):

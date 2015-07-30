@@ -17,8 +17,7 @@ app.service("nnet", function(){
     [9,9]
       ];
 
-  var w_matrix_all = [w1,w2];
+  this.w_matrix_all = [w1,w2];
 
-  network = new NeuralNetwork(w_matrix_all);
   
 });
