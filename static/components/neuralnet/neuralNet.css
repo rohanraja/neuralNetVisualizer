@@ -1,0 +1,48 @@
+.link{
+
+  fill: none;
+ // stroke: #ccc;
+  /* stroke-width: 4px; */
+
+ stroke-dasharray: 1000;
+  stroke-dashoffset: 00;
+  animation: dash 2s ease ;
+
+
+}
+
+@keyframes dash {
+  from {
+    stroke-dashoffset: 1000;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.node{
+
+  z-index: 100;
+  /* animation: nodeAppear 1s ease ; */
+
+}
+@keyframes nodeAppear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.weight_popover{
+
+  width: 100px;
+  height: 50px;
+
+}
+#ex1Slider{
+  width: 95px;
+
+}
+
+
+
