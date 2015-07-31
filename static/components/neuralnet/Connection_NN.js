@@ -1,4 +1,4 @@
-function Connection_NN(w_matrix, source_layer, target_layer){
+function Connection_NN(w_matrix, source_layer, target_layer, nn_network){
 
   this.w_matrix = w_matrix;
   this.source_layer = source_layer;
@@ -18,6 +18,9 @@ function Connection_NN(w_matrix, source_layer, target_layer){
 
         target_node = target_layer.nodes[i_target];
         link = source_node.createLink(target_node, val_target, colors[i]);
+        // link.network = nn_network ;
+        // target_node.network = nn_network;
+        // source_node.network = nn_network;
         allLinks.push(link);
        
       });

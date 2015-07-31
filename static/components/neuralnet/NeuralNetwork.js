@@ -23,7 +23,12 @@ function NeuralNetwork(w_matrix_all){
 
     l = new Layer(nodes, pos);
     l.draw();
-    return l;
+    
+    // l.nodes.forEach(function(val){
+    //   val.network = this;
+    // });
+    
+     return l;
 
   };
 
@@ -40,7 +45,7 @@ function NeuralNetwork(w_matrix_all){
       layers.push(l);
 
       
-      conn = new Connection_NN(val, layers[i], layers[i+1]);
+      conn = new Connection_NN(val, layers[i], layers[i+1], this);
       connections.push(conn);
       
 
@@ -50,6 +55,8 @@ function NeuralNetwork(w_matrix_all){
 
 
   this.updateWeights = function(weights){
+
+  SvgElement.prototype.network = this ;
     
     connections.forEach(function(val){
 
@@ -61,10 +68,12 @@ function NeuralNetwork(w_matrix_all){
 
     weights.forEach(function(val, i){
     
-      conn = new Connection_NN(val, layers[i], layers[i+1]);
+      conn = new Connection_NN(val, layers[i], layers[i+1], this);
       connections.push(conn);
     
     });
+
+    SvgElement.prototype.network.connections = connections ;
 
 
   };
@@ -73,6 +82,26 @@ function NeuralNetwork(w_matrix_all){
 
     $('#nnet_svg').html('');
   };
+
+
+  SvgElement.prototype.fadeAllOut = function(){
+
+    connections[0].fadeOut();
+    connections[1].fadeOut();
+    $('.pathHoverHelpers').attr("opacity", 0);    
+    $('.node').attr('opacity', 0.1);
+   
+  };
+  SvgElement.prototype.fadeAllIn = function(){
+
+    connections[0].fadeIn();
+    connections[1].fadeIn();
+    $('.pathHoverHelpers').attr("opacity", 0);    
+     $('.node').attr('opacity', 1);
+   
+  };
+
+
 
 }
 
