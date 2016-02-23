@@ -13,7 +13,7 @@ app.controller("logregCtrl", function($scope, nnet) {
     $scope.plotPathfromVertices = function(data)
     {
     	console.log("Got New Vertices Array");
-        resultData = JSON.parse(data.data);
+        resultData = JSON.parse(data);
         points = resultData.plotPath;
         $scope.cost = resultData.cost ;
         $scope.$apply('cost') ;

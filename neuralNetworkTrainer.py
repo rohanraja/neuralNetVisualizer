@@ -73,6 +73,7 @@ class NeuralNetworkTrainer():
         nnCost = lambda W : self.NN.costFn(self.NN.deLinearize(W), self.x_train, self.y_train)
         nnCostPrime = lambda W : self.NN.costFnPrime(self.NN.deLinearize(W), self.x_train, self.y_train)
         self.betas = fmin_bfgs(self.nnCost, self.betas, fprime=self.nnCostPrime ,callback= self.onThetaIteration)
+        # self.betas = myFminBFGS.fminLooped(self.nnCost, self.betas, fprime=self.nnCostPrime ,callback= self.onThetaIteration)
         #dill.dumps(nnnCost)
 
         #self.betas = myFminBFGS.fminLooped(nnCost, self.betas, fprime=nnCostPrime ,callback=self.onThetaIteration)

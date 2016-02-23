@@ -5,6 +5,8 @@ import plotter
 import json
 import featureMapper
 import time
+import myFminBFGS
+
 
 def sigmoid(x):
     try:
@@ -81,6 +83,7 @@ class LogisticRegression():
         self.initialCost = self.negative_lik(self.betas)
 
         self.betas = fmin_bfgs(self.negative_lik, self.betas, fprime=dB, callback= self.onThetaIteration)
+        # self.betas = myFminBFGS.fminLooped(self.negative_lik, self.betas, fprime=dB, callback= self.onThetaIteration)
 
         return "Trained"
 

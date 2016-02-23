@@ -44,7 +44,7 @@ function LogTrainer (tData, pNumClasses, onRecvData) {
 
     this.train = function()
     {
-    	this.requestServerTraining();
+    	this.requestServerTrainingHTTP();
     };
 
     this.processTrainedTheta = function(data)
@@ -87,6 +87,46 @@ function LogTrainer (tData, pNumClasses, onRecvData) {
         //this.ajaxManager.postJSON(server_url, jsonData, this.processTrainedTheta);
 
     };
+
+    this.requestServerTrainingHTTP = function()
+    {
+    	jsonData = JSON.stringify(this);
+      onRecvData = this.onRecvData;
+      var mainLoopId ;
+
+    	//var server_url = '/gradDesc';
+
+    	
+      $.post("/trainRequest" , {msg: jsonData} , function(data){
+
+        mainLoopId = setInterval(function(){
+          
+            $.get("/trainStat/" + data, function(data2){
+              console.log(data2);
+              onRecvData(data2);
+            }).fail(function() {
+                clearInterval(mainLoopId);
+            });
+
+        }, 600);
+
+      });
+
+    	// ws.onmessage = this.onRecvData;//this.plotPathfromVertices;
+
+
+        //this.ajaxManager.postJSON(server_url, jsonData, this.processTrainedTheta);
+
+    };
+    this.updateStats = function(){
+
+      $.get("/trainStat/" + this.jobid, function(data){
+        this.onRecvData(data);
+      });
+
+    }
+
+
 
     this.predict = function(x,y)
     {

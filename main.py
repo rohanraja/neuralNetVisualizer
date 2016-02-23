@@ -1,43 +1,5 @@
-#
-# class EchoWebSocket(tornado.websocket.WebSocketHandler):
-#
-#     def open(self):
-#         print("WebSocket opened")
-#
-#     #@run_async
-#     def on_message(self, message):
-#         print message
-#
-#         self.inputData = json.loads(message)
-#         samples = self.inputData['trainingData']['samples']
-#
-#         X = [sample['inputVector'] for sample in samples]
-#         Y = [sample['outputVal'] for sample in samples]
-#
-#         #lr2 = lrPoly.LogisticRegression(X,Y, socketWriter=self.write_message, inputData= self.inputData)
-#         lr2 = nnT.NeuralNetworkTrainer(X,Y, socketWriter=self.write_message, inputData= self.inputData)
-#
-#         lr3 = nnT.NeuralNetworkTrainer(X,Y, socketWriter= lambda w : w, inputData= self.inputData)
-#
-#         #import dill
-#         #dill.dump(lr3, open('train.dat', 'w'))
-#
-#        # print "Initial Likelihood : ", lr2.nnCost(lr2.betas)
-#
-#         finalTheta = lr2.train()
-#
-#         #lr2.onThetaIteration(finalTheta)
-#
-#         print finalTheta
-#
-#
-#     def on_close(self):
-#         print("WebSocket closed")
-#
-#
-
-
 __author__ = 'rohanraja'
+from time import sleep
 import tornado.ioloop
 import tornado.web
 import tornado.websocket
@@ -53,14 +15,15 @@ import logisticRegressionPoly as lrPoly
 import neuralNetworkTrainer as nnT
 import TrainingJob
 from multiprocessing.pool import ThreadPool
+from multiprocessing import Queue, Pool
 poolWorkers   = ThreadPool(10)
-from multiprocessing import Queue
 ALL_PROGRESSES = []
 JOBCOUNT = 0
 ALLHANDLERS = {}
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
+        print "Recieved request"
         f = open("static/partials/index.html")
         self.write(f.read())
 class Home(tornado.web.RequestHandler):
@@ -69,15 +32,61 @@ class Home(tornado.web.RequestHandler):
         outp = loader.load("test.html").generate(myvalue="XXX")
         self.write(outp)
         self.write("This is Home")
+
+class TrainingRequest(tornado.web.RequestHandler):
+    def post(self):
+        message = self.get_argument("msg")
+        print "Recieved Training Request"
+        self._run_trainer(message)
+
+    def _run_trainer(self, message):
+        global JOBCOUNT
+        JOBCOUNT += 1
+        self.write(str(JOBCOUNT))
+        ALLHANDLERS[JOBCOUNT] = []
+        poolWorkers.apply_async(lambda : self._blocking_run_trainer(message, JOBCOUNT), (), {}, lambda arg: self.on_train_complete(JOBCOUNT))
+        # ALLHANDLERS[JOBCOUNT].append(self.write_message)
+    
+    def _blocking_run_trainer(self, message, jobid):
+        print "CALLED BLOCKING IN THREAD"
+        self.jobid = jobid
+        self.inputData = json.loads(message)
+        samples = self.inputData['trainingData']['samples']
+        X = [sample['inputVector'] for sample in samples]
+        Y = [sample['outputVal'] for sample in samples]
+        if self.inputData['ml_algo'] == "nnet":
+            lr2 = nnT.NeuralNetworkTrainer(X,Y, socketWriter=self.trainUpdaterGEN(self.jobid), inputData= self.inputData)
+        else:
+            lr2 = lrPoly.LogisticRegression(X,Y, socketWriter=self.trainUpdaterGEN(self.jobid), inputData= self.inputData)
+        lr2.train()
+
+    def trainUpdaterGEN(self, jid):
+        def f(msg):
+            ALLHANDLERS[jid] = (msg)
+
+        return f
+
+    def on_train_complete(self, inp):
+        print "Training Complete", inp
+        sleep(2)
+        del ALLHANDLERS[inp]
+
+class TrainingStat(tornado.web.RequestHandler):
+    def get(self, jid):
+        self.write(ALLHANDLERS[int(jid)])
+
 class EchoWebSocket(tornado.websocket.WebSocketHandler):
     def open(self):
         print("WebSocket opened")
+    
     def on_message(self, message):
         print "Running Trainer"
         self._run_trainer(message)
+    
     def on_train_complete(self, inp):
         print "Training Complete", inp
         del ALLHANDLERS[inp]
+    
     def _run_trainer(self, message):
         global JOBCOUNT
         q = Queue()
@@ -85,6 +94,7 @@ class EchoWebSocket(tornado.websocket.WebSocketHandler):
         ALLHANDLERS[JOBCOUNT] = []
         poolWorkers.apply_async(lambda : self._blocking_run_trainer(message, JOBCOUNT), (), {}, lambda arg: self.on_train_complete(JOBCOUNT))
         ALLHANDLERS[JOBCOUNT].append(self.write_message)
+    
     def _blocking_run_trainer(self, message, jobid):
         print "CALLED BLOCKING IN THREAD"
         self.jobid = jobid
@@ -97,15 +107,18 @@ class EchoWebSocket(tornado.websocket.WebSocketHandler):
         else:
             lr2 = lrPoly.LogisticRegression(X,Y, socketWriter=self.trainUpdater, inputData= self.inputData)
         lr2.train()
+    
     def sendDataMessage(self, message, jobid):
         for updater in ALLHANDLERS[jobid]:
             updater(message)
+    
     def trainUpdater(self, message):
         import threading
         thread = threading.current_thread()
         # print "Update from: ", thread.name
         ioloop = tornado.ioloop.IOLoop.instance()
         ioloop.add_callback(lambda: self.sendDataMessage(message, self.jobid))
+    
     def on_close(self):
         print("WebSocket closed")
 class LogRegression(tornado.web.RequestHandler):
@@ -152,6 +165,8 @@ class MyStaticFileHandler(tornado.web.StaticFileHandler):
 
 handlers = [
      (r"/",             MainHandler),
+     (r"/trainRequest",             TrainingRequest),
+     (r"/trainStat/([^/]+)",             TrainingStat),
      (r"/home",         LogRegression),
      (r"/jobs",         JobManager),
      (r"/jobsocket",    JobSocket),

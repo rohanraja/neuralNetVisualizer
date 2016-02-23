@@ -166,7 +166,7 @@ def fminLooped(f, x0, fprime=None, args=(), gtol=1e-5, norm=Inf,
     pickle.dump(pickleBles, open('inputParams.dat', 'w'))
     pickle.dump(loopThing, open('loopFunc.dat', 'w'))
 
-    for loopI in range(10):
+    for loopI in range(100):
 
         newInputParams = loopThing(newInputParams)
 
@@ -184,7 +184,7 @@ def getOutputParams(inputParams, localVars):
 
     return outputParams
 
-def loopThing(inputParams):
+def loopThing_BFGS(inputParams):
 
     for key in inputParams:
         exec(key + " = inputParams['" + key + "']")
@@ -233,6 +233,19 @@ def loopThing(inputParams):
     A2 = I - yk[:,numpy.newaxis] * sk[numpy.newaxis,:] * rhok
     Hk = numpy.dot(A1,numpy.dot(Hk,A2)) + rhok * sk[:,numpy.newaxis] \
              * sk[numpy.newaxis,:]
+
+    outputParams = getOutputParams(inputParams, locals().items())
+    return outputParams
+def loopThing(inputParams):
+
+    for key in inputParams:
+        exec(key + " = inputParams['" + key + "']")
+
+
+    xk = xk - 0.01* fprime(xk)
+
+    if callback is not None:
+        callback(xk)
 
     outputParams = getOutputParams(inputParams, locals().items())
     return outputParams
