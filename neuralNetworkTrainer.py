@@ -64,8 +64,6 @@ class NeuralNetworkTrainer():
 
         print "Initial Likelihood : ", self.initialCost
 
-        import dill
-
         #nns = dill.source.getsource(self.NN)
         #print nns, "************"
         #print dill.dump(self.NN , open('/Users/rohanraja/Dropbox/Distributed Computing Startup/persist/Test.dat', 'w'))

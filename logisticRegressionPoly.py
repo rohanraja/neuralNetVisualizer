@@ -142,7 +142,7 @@ class LogisticRegression():
         result['plotPath'] = list([list(point*self.divFactor) for point in plotPathPoints])
         result['cost'] = cost
         result['percentComplete'] = 100 - ((cost *100) / self.initialCost)
-        result['weights'] = []
+        result['weights'] = {}
 
 
         self.socketWriter(json.dumps(result))

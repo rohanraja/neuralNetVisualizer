@@ -43,7 +43,7 @@ class TrainingRequest(tornado.web.RequestHandler):
         global JOBCOUNT
         JOBCOUNT += 1
         self.write(str(JOBCOUNT))
-        ALLHANDLERS[JOBCOUNT] = []
+        ALLHANDLERS[JOBCOUNT] = ""
         poolWorkers.apply_async(lambda : self._blocking_run_trainer(message, JOBCOUNT), (), {}, lambda arg: self.on_train_complete(JOBCOUNT))
         # ALLHANDLERS[JOBCOUNT].append(self.write_message)
     
@@ -68,7 +68,6 @@ class TrainingRequest(tornado.web.RequestHandler):
 
     def on_train_complete(self, inp):
         print "Training Complete", inp
-        sleep(2)
         del ALLHANDLERS[inp]
 
 class TrainingStat(tornado.web.RequestHandler):
@@ -181,7 +180,7 @@ if __name__ == "__main__":
     CERT_FILE = 'certs/nginx.crt'
     KEY_FILE = 'certs/nginx.key'
     
-    application.listen(3001)
+    application.listen(3000)
     # application.listen(3001, ssl_options={
     # "certfile": CERT_FILE,
     # "keyfile": KEY_FILE,
