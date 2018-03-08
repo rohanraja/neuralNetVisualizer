@@ -60,7 +60,7 @@ function Link(node1, node2, weight, color){
 
     this.svg.append("path")
     .attr("stroke", this.color)
-    .attr("stroke-width", "1px")
+    .attr("stroke-width", "2px")
     .attr("class", "link link_"+lid)
     .attr("d", d1)
     .attr("id", "path"+lid)
@@ -69,7 +69,7 @@ function Link(node1, node2, weight, color){
         this.svg.append("path")
     .attr("stroke", this.color)
     .attr("class", "pathHoverHelpers link_"+lid)
-    .attr("stroke-width", "15px")
+    .attr("stroke-width", "35px")
     .attr("d", d1)
     .attr("opacity", "0");
 

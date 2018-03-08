@@ -80,10 +80,10 @@ def Customfmin_bfgs(f, x0, fprime=None, args=(), gtol=1e-5, norm=Inf,
                 rhok = 1.0 / (numpy.dot(yk,sk))
             except ZeroDivisionError:
                 rhok = 1000.0
-                print "Divide-by-zero encountered: rhok assumed large"
+                print("Divide-by-zero encountered: rhok assumed large")
             if numpy.isinf(rhok): # this is patch for numpy
                 rhok = 1000.0
-                print "Divide-by-zero encountered: rhok assumed large"
+                print("Divide-by-zero encountered: rhok assumed large")
             A1 = I - sk[:,numpy.newaxis] * yk[numpy.newaxis,:] * rhok
             A2 = I - yk[:,numpy.newaxis] * sk[numpy.newaxis,:] * rhok
             Hk = numpy.dot(A1,numpy.dot(Hk,A2)) + rhok * sk[:,numpy.newaxis] \
@@ -93,28 +93,28 @@ def Customfmin_bfgs(f, x0, fprime=None, args=(), gtol=1e-5, norm=Inf,
             fval = old_fval
         if warnflag == 2:
             if disp:
-                print "Warning: Desired error not necessarily achieved" \
-                      "due to precision loss"
-                print "         Current function value: %f" % fval
-                print "         Iterations: %d" % k
-                print "         Function evaluations: %d" % func_calls[0]
-                print "         Gradient evaluations: %d" % grad_calls[0]
+                print("Warning: Desired error not necessarily achieved" \
+                      "due to precision loss")
+                print("         Current function value: %f" % fval)
+                print("         Iterations: %d" % k)
+                print("         Function evaluations: %d" % func_calls[0])
+                print("         Gradient evaluations: %d" % grad_calls[0])
 
         elif k >= maxiter:
             warnflag = 1
             if disp:
-                print "Warning: Maximum number of iterations has been exceeded"
-                print "         Current function value: %f" % fval
-                print "         Iterations: %d" % k
-                print "         Function evaluations: %d" % func_calls[0]
-                print "         Gradient evaluations: %d" % grad_calls[0]
+                print("Warning: Maximum number of iterations has been exceeded")
+                print("         Current function value: %f" % fval)
+                print("         Iterations: %d" % k)
+                print("         Function evaluations: %d" % func_calls[0])
+                print("         Gradient evaluations: %d" % grad_calls[0])
         else:
             if disp:
-                print "Optimization terminated successfully."
-                print "         Current function value: %f" % fval
-                print "         Iterations: %d" % k
-                print "         Function evaluations: %d" % func_calls[0]
-                print "         Gradient evaluations: %d" % grad_calls[0]
+                print("Optimization terminated successfully.")
+                print("         Current function value: %f" % fval)
+                print("         Iterations: %d" % k)
+                print("         Function evaluations: %d" % func_calls[0])
+                print("         Gradient evaluations: %d" % grad_calls[0])
 
         if full_output:
             retlist = xk, fval, gfk, Hk, func_calls[0], grad_calls[0], warnflag
@@ -162,11 +162,11 @@ def fminLooped(f, x0, fprime=None, args=(), gtol=1e-5, norm=Inf,
 
     pickleBles, NonPickles = ParamsManager.filterUnpickles(newInputParams)
 
-    import dill
-    pickle.dump(pickleBles, open('inputParams.dat', 'w'))
-    pickle.dump(loopThing, open('loopFunc.dat', 'w'))
+    # import dill
+    # pickle.dump(pickleBles, open('inputParams.dat', 'w'))
+    # pickle.dump(loopThing, open('loopFunc.dat', 'w'))
 
-    for loopI in range(100):
+    for loopI in range(300):
 
         newInputParams = loopThing(newInputParams)
 
@@ -200,7 +200,7 @@ def loopThing_BFGS(inputParams):
         if alpha_k is None:
             # This line search also failed to find a better solution.
             warnflag = 2
-            outputParams = getOutputParams(inputParams, locals().items())
+            outputParams = getOutputParams(inputParams, list(locals().items()))
             return outputParams
 
     xkp1 = xk + alpha_k * pk
@@ -218,34 +218,55 @@ def loopThing_BFGS(inputParams):
     k += 1
     gnorm = vecnorm(gfk,ord=norm)
     if (gnorm <= gtol):
-        outputParams = getOutputParams(inputParams, locals().items())
+        outputParams = getOutputParams(inputParams, list(locals().items()))
         return outputParams
 
     try: # this was handled in numeric, let it remaines for more safety
         rhok = 1.0 / (numpy.dot(yk,sk))
     except ZeroDivisionError:
         rhok = 1000.0
-        print "Divide-by-zero encountered: rhok assumed large"
+        print("Divide-by-zero encountered: rhok assumed large")
     if numpy.isinf(rhok): # this is patch for numpy
         rhok = 1000.0
-        print "Divide-by-zero encountered: rhok assumed large"
+        print("Divide-by-zero encountered: rhok assumed large")
     A1 = I - sk[:,numpy.newaxis] * yk[numpy.newaxis,:] * rhok
     A2 = I - yk[:,numpy.newaxis] * sk[numpy.newaxis,:] * rhok
     Hk = numpy.dot(A1,numpy.dot(Hk,A2)) + rhok * sk[:,numpy.newaxis] \
              * sk[numpy.newaxis,:]
 
-    outputParams = getOutputParams(inputParams, locals().items())
+    outputParams = getOutputParams(inputParams, list(locals().items()))
     return outputParams
+
+from scipy.optimize import line_search
+
 def loopThing(inputParams):
 
     for key in inputParams:
         exec(key + " = inputParams['" + key + "']")
 
 
-    xk = xk - 0.01* fprime(xk)
+
+    # pk = -numpy.dot(Hk,gfk)
+    # pk = -gfk
+    # alpha_k, fc, gc, old_fval, old_old_fval, gfkp1 = \
+    #    linesearch.line_search(f,myfprime,xk,pk,gfk,
+    #                           old_fval,old_old_fval)
+    # if alpha_k is None:  # line search failed try different one.
+    #     alpha_k, fc, gc, old_fval, old_old_fval, gfkp1 = \
+    #              line_search(f,myfprime,xk,pk,gfk,
+    #                          old_fval,old_old_fval)
+    #     if alpha_k is None:
+    #         # This line search also failed to find a better solution.
+    #         warnflag = 2
+    #         outputParams = getOutputParams(inputParams, locals().items())
+    #         return outputParams
+    #
+    # print alpha_k
+    
+    xk = xk - 0.01 * fprime(xk)
 
     if callback is not None:
         callback(xk)
 
-    outputParams = getOutputParams(inputParams, locals().items())
+    outputParams = getOutputParams(inputParams, list(locals().items()))
     return outputParams

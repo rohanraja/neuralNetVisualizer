@@ -26,7 +26,7 @@ class LogisticRegression(object):
         self.theta = numpy.array([0.0] * (n + 1))
 
         self.printIter = printIter
-        print "lambda=", self.lam
+        print("lambda=", self.lam)
 
     # transform function
     def __sigmoid(self, x):
@@ -59,7 +59,7 @@ class LogisticRegression(object):
         h_theta = self.__sigmoid(numpy.dot(X, theta))
         diff = h_theta - Y
 
-        for j in xrange(0, n):
+        for j in range(0, n):
             grad[j] = (1.0 / m) * (sum(diff * X[:, j]))
 
         return cost, grad
@@ -81,7 +81,7 @@ class LogisticRegression(object):
         # print "m,n=" , m,n
         # print "theta", len(self.theta)
 
-        for i in xrange(0, iters):
+        for i in range(0, iters):
             theta_temp = self.theta
 
             # update theta[0]
@@ -90,7 +90,7 @@ class LogisticRegression(object):
             self.theta[0] = theta_temp[0] - self.alpha * \
                                             (1.0 / m) * sum(diff * self.X[:, 0])
 
-            for j in xrange(1, n):
+            for j in range(1, n):
                 val = theta_temp[
                           j] - self.alpha * (1.0 / m) * (sum(diff * self.X[:, j]) + self.lam * m * theta_temp[j])
                 # print val
@@ -130,7 +130,7 @@ class LogisticRegression(object):
         h_theta = self.__sigmoid(numpy.dot(self.X, theta))
         diff = h_theta - self.Y
 
-        for j in xrange(0, n):
+        for j in range(0, n):
             grad[j] = (1.0 / m) * (sum(diff * self.X[:, j]))
 
         return grad

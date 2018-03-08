@@ -15,11 +15,11 @@ def timeThis(func):
 
         retVal = func(*args, **kwargs)
 
-        print "Calculation of ", func.func_name, " took ", t.time() - t1, " seconds"
+        print("Calculation of ", func.__name__, " took ", t.time() - t1, " seconds")
 
         return retVal
 
-	return timingThis
+    return timingThis
 
 
 

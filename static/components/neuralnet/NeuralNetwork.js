@@ -23,11 +23,6 @@ function NeuralNetwork(w_matrix_all){
 
     l = new Layer(nodes, pos);
     l.draw();
-    
-    // l.nodes.forEach(function(val){
-    //   val.network = this;
-    // });
-    
      return l;
 
   };
@@ -56,7 +51,6 @@ function NeuralNetwork(w_matrix_all){
 
   this.updateWeights = function(weights){
 
-  SvgElement.prototype.network = this ;
     
     connections.forEach(function(val){
 
@@ -73,7 +67,6 @@ function NeuralNetwork(w_matrix_all){
     
     });
 
-    SvgElement.prototype.network.connections = connections ;
 
 
   };
@@ -88,7 +81,6 @@ function NeuralNetwork(w_matrix_all){
 
     connections[0].fadeOut();
     connections[1].fadeOut();
-    $('.pathHoverHelpers').attr("opacity", 0);    
     $('.node').attr('opacity', 0.1);
    
   };

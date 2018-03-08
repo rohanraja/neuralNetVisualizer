@@ -83,7 +83,7 @@ class LogisticRegression():
     def afterIter(self, val):
 
         self.num = self.num + 1
-        print self.num
+        print(self.num)
 
     def train(self):
         """ Define the gradient and hand it off to a scipy gradient-based
@@ -186,17 +186,17 @@ if __name__ == "__main__":
                                 x_test=data.X_test, y_test=data.Y_test,
                                 alpha=a)
 
-        print "Initial likelihood:"
-        print lr.lik(lr.betas)
+        print("Initial likelihood:")
+        print(lr.lik(lr.betas))
 
         # Train the model
         lr.train()
 
         # Display execution info
-        print "Final betas:"
-        print lr.betas
-        print "Final lik:"
-        print lr.lik(lr.betas)
+        print("Final betas:")
+        print(lr.betas)
+        print("Final lik:")
+        print(lr.lik(lr.betas))
 
         # Plot the results
         subplot(len(alphas), 2, 2*j + 1)
@@ -227,17 +227,17 @@ def testRun():
                                 x_test=data.X_test, y_test=data.Y_test,
                                 alpha=a)
 
-        print "Initial likelihood:"
-        print lr.lik(lr.betas)
+        print("Initial likelihood:")
+        print(lr.lik(lr.betas))
 
         # Train the model
         lr.train()
 
         # Display execution info
-        print "Final betas:"
-        print lr.betas
-        print "Final lik:"
-        print lr.lik(lr.betas)
+        print("Final betas:")
+        print(lr.betas)
+        print("Final lik:")
+        print(lr.lik(lr.betas))
 
         # Plot the results
         pylab.subplot(len(alphas), 2, 2*j + 1)

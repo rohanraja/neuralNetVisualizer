@@ -1,4 +1,5 @@
 from scipy.optimize.optimize import fmin_cg, fmin_bfgs, fmin
+from scipy.optimize import minimize
 import numpy as np
 import pylab
 import plotter
@@ -27,6 +28,10 @@ class NeuralNetworkTrainer():
             self.alpha = alpha
 
             self.inputData = inputData
+
+            # degar = self.inputData['degree'].split("_")
+            # self.degree = int(degar[0])
+            # self.optiMethod = degar[1]
 
             self.degree = int(self.inputData['degree'])
             self.divFactor = np.max(x_train) #int(self.inputData['divFactor'])
@@ -62,7 +67,8 @@ class NeuralNetworkTrainer():
 
     def train(self):
 
-        print "Initial Likelihood : ", self.initialCost
+        # import ipdb; ipdb.set_trace()
+        print("Initial Likelihood : ", self.initialCost)
 
         #nns = dill.source.getsource(self.NN)
         #print nns, "************"
@@ -70,6 +76,18 @@ class NeuralNetworkTrainer():
 
         nnCost = lambda W : self.NN.costFn(self.NN.deLinearize(W), self.x_train, self.y_train)
         nnCostPrime = lambda W : self.NN.costFnPrime(self.NN.deLinearize(W), self.x_train, self.y_train)
+        #
+        #
+        # self.betas = minimize(
+        #         self.nnCost, 
+        #         self.betas,
+        #         # method = 'BFGS',
+        #         method = self.optiMethod,
+        #         jac=self.nnCostPrime ,
+        #         options={'disp': True},
+        #         callback= self.onThetaIteration
+        # )
+
         self.betas = fmin_bfgs(self.nnCost, self.betas, fprime=self.nnCostPrime ,callback= self.onThetaIteration)
         # self.betas = myFminBFGS.fminLooped(self.nnCost, self.betas, fprime=self.nnCostPrime ,callback= self.onThetaIteration)
         #dill.dumps(nnnCost)
@@ -103,7 +121,7 @@ class NeuralNetworkTrainer():
 
         cost = self.nnCost(theta)
 
-        print "LikelyHood is : ", cost
+        print("LikelyHood is : ", cost)
 
         pointsDiv = 3.0
 

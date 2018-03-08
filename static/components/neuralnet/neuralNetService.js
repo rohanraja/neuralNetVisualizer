@@ -1,6 +1,6 @@
 var app = angular.module("mlTut");
 
-nodeRadius = 25;    // Make one variable for this
+nodeRadius = 15;    // Make one variable for this
 arrowheadLength = 1;
 
 app.service("nnet", function(){

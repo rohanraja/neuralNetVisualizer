@@ -127,7 +127,7 @@ class LogisticRegression():
 
         cost = self.negative_lik(theta)
 
-        print "LikelyHood: ", cost
+        print("LikelyHood: ", cost)
 
         plotPathPoints = plotter.getPlottingPoints(0,
                                                    float(self.inputData['widthSvg']) / self.divFactor,
@@ -142,7 +142,7 @@ class LogisticRegression():
         result['plotPath'] = list([list(point*self.divFactor) for point in plotPathPoints])
         result['cost'] = cost
         result['percentComplete'] = 100 - ((cost *100) / self.initialCost)
-        result['weights'] = {}
+        result['weights'] = []
 
 
         self.socketWriter(json.dumps(result))

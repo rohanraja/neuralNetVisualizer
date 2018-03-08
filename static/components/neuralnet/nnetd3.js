@@ -52,10 +52,10 @@ app.service("nnetd3", function(){
     .style("fill", "purple")
     .style("opacity", function(d){ return d.a_value });
     
-    nodeEnter.append("text")
-      .attr("dy", "5")
-      .attr("text-anchor", "middle")
-      .text(function(d){return d.a_value});
+    // nodeEnter.append("text")
+    //   .attr("dy", "5")
+    //   .attr("text-anchor", "middle");
+      // .text(function(d){return d.a_value});
     
     layer_left = svg_width * left_factor;
     group_height = layer_circles.node().getBBox().height  ; 

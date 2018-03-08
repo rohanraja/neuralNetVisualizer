@@ -24,7 +24,7 @@ def testLoopFunc():
     while(i < 6):
 
         out = i*i
-        print out
+        print(out)
 
         i = i + 1
 
@@ -54,9 +54,9 @@ def LoopFunc(inputParams):
 
     out = i*i
     i = i + 1
-    print out
+    print(out)
 
-    outputParams = getOutputParams(inputParams, locals().items())
+    outputParams = getOutputParams(inputParams, list(locals().items()))
 
     return outputParams
 

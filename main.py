@@ -23,7 +23,7 @@ ALLHANDLERS = {}
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
-        print "Recieved request"
+        print("Recieved request")
         f = open("static/partials/index.html")
         self.write(f.read())
 class Home(tornado.web.RequestHandler):
@@ -36,7 +36,7 @@ class Home(tornado.web.RequestHandler):
 class TrainingRequest(tornado.web.RequestHandler):
     def post(self):
         message = self.get_argument("msg")
-        print "Recieved Training Request"
+        print("Recieved Training Request")
         self._run_trainer(message)
 
     def _run_trainer(self, message):
@@ -48,7 +48,7 @@ class TrainingRequest(tornado.web.RequestHandler):
         # ALLHANDLERS[JOBCOUNT].append(self.write_message)
     
     def _blocking_run_trainer(self, message, jobid):
-        print "CALLED BLOCKING IN THREAD"
+        print("CALLED BLOCKING IN THREAD")
         self.jobid = jobid
         self.inputData = json.loads(message)
         samples = self.inputData['trainingData']['samples']
@@ -67,7 +67,7 @@ class TrainingRequest(tornado.web.RequestHandler):
         return f
 
     def on_train_complete(self, inp):
-        print "Training Complete", inp
+        print("Training Complete", inp)
         del ALLHANDLERS[inp]
 
 class TrainingStat(tornado.web.RequestHandler):
@@ -79,11 +79,11 @@ class EchoWebSocket(tornado.websocket.WebSocketHandler):
         print("WebSocket opened")
     
     def on_message(self, message):
-        print "Running Trainer"
+        print("Running Trainer")
         self._run_trainer(message)
     
     def on_train_complete(self, inp):
-        print "Training Complete", inp
+        print("Training Complete", inp)
         del ALLHANDLERS[inp]
     
     def _run_trainer(self, message):
@@ -95,7 +95,7 @@ class EchoWebSocket(tornado.websocket.WebSocketHandler):
         ALLHANDLERS[JOBCOUNT].append(self.write_message)
     
     def _blocking_run_trainer(self, message, jobid):
-        print "CALLED BLOCKING IN THREAD"
+        print("CALLED BLOCKING IN THREAD")
         self.jobid = jobid
         self.inputData = json.loads(message)
         samples = self.inputData['trainingData']['samples']
@@ -132,16 +132,16 @@ class JobSocket(tornado.websocket.WebSocketHandler):
     def open(self):
         print("JOBS SOCKET opened")
     def on_message(self, message):
-        print "JOBS SOCKET RECIEVED"
+        print("JOBS SOCKET RECIEVED")
         out = ""
-        for q in ALLHANDLERS.keys():
+        for q in list(ALLHANDLERS.keys()):
             try:
                 ALLHANDLERS[q].append(self.write_message)
             except:
                 pass
         self.write_message(out)
     def on_close(self):
-        print "Closed"
+        print("Closed")
 class JobManager(tornado.web.RequestHandler):
     def get(self):
         out = ""

@@ -10,12 +10,16 @@ function Layer(nodeList, position){
   
     var layer_circles = this.svg.append("g");
 
-    var gap = this.leftFactor == 0.5 ? 150 : 200 ;
 
     var circles = [];
     var pos = { x: 0, y: 0 };
 
     var circle = layer_circles.selectAll("g").data(this.nodes);
+
+    var midGap = this.svg_height / this.nodes.length ; 
+    nodeRadius = this.nodes.length > 10 ? 10 : 15 ;
+
+    var gap = this.leftFactor == 0.5 ? midGap : 150 ;
 
     var nodeEnter = circle.enter().append('g');
     nodeEnter.attr("transform", function(d, i) { 
@@ -36,10 +40,10 @@ function Layer(nodeList, position){
     .style("fill", "purple")
     .style("opacity", function(d){ return d.a_value });
     
-    nodeEnter.append("text")
-      .attr("dy", "5")
-      .attr("text-anchor", "middle")
-      .text(function(d){return d.a_value});
+    // nodeEnter.append("text")
+    //   .attr("dy", "5")
+    //   .attr("text-anchor", "middle")
+    //   .text(function(d){return d.a_value});
     
     layer_left = this.svg_width * this.leftFactor;
     group_height = layer_circles.node().getBBox().height  ; 

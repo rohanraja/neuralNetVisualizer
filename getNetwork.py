@@ -7,4 +7,4 @@ import pickle
 
 nw = pickle.load(open('f.dat'))
 
-print nw
+print(nw)

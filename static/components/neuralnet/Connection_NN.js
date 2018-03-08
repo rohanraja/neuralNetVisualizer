@@ -6,7 +6,7 @@ function Connection_NN(w_matrix, source_layer, target_layer, nn_network){
   
   allLinks = [];
 
-  colors = ["purple", "Blue", "Green", "black", "Yellow"];
+  colors = ["purple", "Blue", "Green", "black", "red"];
 
   this.draw = function(){
     
@@ -17,10 +17,7 @@ function Connection_NN(w_matrix, source_layer, target_layer, nn_network){
       val.forEach(function(val_target, i_target){
 
         target_node = target_layer.nodes[i_target];
-        link = source_node.createLink(target_node, val_target, colors[i]);
-        // link.network = nn_network ;
-        // target_node.network = nn_network;
-        // source_node.network = nn_network;
+        link = source_node.createLink(target_node, val_target, colors[i % colors.length ]);
         allLinks.push(link);
        
       });
